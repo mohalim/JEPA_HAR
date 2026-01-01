@@ -6,42 +6,31 @@ import warnings
 
 from torch.utils.data import DataLoader
 
-from models.jepa_pos import JEPA_SEQ
+from models.jepa import JEPA_SEQ
 from training.train import train_self_supervised
 from utils.history import save_history_txt
-from data.dataset_seq import SequentialMaskingSensorDataset, SequentialSensorDataset
+from data.dataset_seq import SequentialSensorDataset
 
 warnings.filterwarnings('ignore')
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"device: {device}")
 
+is_load = False
+
 # 32:	3e-5
 # 64:	6e-5 – 1e-4
 # 128:	1e-4 – 2e-4
 # 256:	2e-4 – 3e-4
-lr = 1e-4
+lr = 5e-5
+momentum = 0.95
 batch_size = 128
 
 num_windows = 2
-window_size = 80
+window_size = 102
 channels = 6
-overlap = 0.5
-masking_factor = 0.7
-
-# output dimension of transformer encoder
-embedding_dim = 256
-hidden_dim = 384
-
-is_load = False
-
-# -----------------------------
-# 1. JEPA self-supervised pretraining
-# -----------------------------
-model = JEPA_SEQ(
-    input_channels=channels, embedding_dim=embedding_dim, 
-    window_size=window_size, hidden_dim=hidden_dim
-    ).to(device)
+patch_size = 17     # window_size / patch_size = 6 patches
+masking_factor = 0.5
 
 train_path_dataset = "../../Datasets/REALDISP_AccGyro/train_npy/"
 val_path_dataset = "../../Datasets/REALDISP_AccGyro/val_npy/"
@@ -50,7 +39,9 @@ test_path_dataset = "../../Datasets/REALDISP_AccGyro/test_npy/"
 train_dataset = SequentialSensorDataset(
     root_dir=train_path_dataset,
     window_size=window_size,
-    overlap=overlap,
+    overlap=0.5,
+    patch_size=patch_size,
+    num_windows=num_windows,
     masking_factor=masking_factor,
     has_label=False
 )
@@ -58,7 +49,9 @@ train_dataset = SequentialSensorDataset(
 val_dataset = SequentialSensorDataset(
     root_dir=val_path_dataset,
     window_size=window_size,
-    overlap=overlap,
+    overlap=0.5,
+    patch_size=patch_size,
+    num_windows=num_windows,
     masking_factor=masking_factor,
     has_label=False
 )
@@ -66,7 +59,9 @@ val_dataset = SequentialSensorDataset(
 test_dataset = SequentialSensorDataset(
     root_dir=test_path_dataset,
     window_size=window_size,
-    overlap=overlap,
+    overlap=0.5,
+    patch_size=patch_size,
+    num_windows=num_windows,
     masking_factor=masking_factor,
     has_label=False
 )
@@ -79,6 +74,18 @@ train_loader = DataLoader(train_dataset,
                           pin_memory=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+# embedding dimension of transformer encoder
+embedding_dim = 256
+predictor_embed_dim = 128
+model = JEPA_SEQ(
+    seq_length=window_size,
+    channels=channels,
+    patch_size=patch_size,
+    num_windows=num_windows, 
+    embedding_dim=embedding_dim, 
+    predictor_embed_dim=predictor_embed_dim
+    ).to(device)
 
 max_epochs = 100
 patience = 100
@@ -101,7 +108,7 @@ else:
 
 history_file_path = 'history'
 os.makedirs(history_file_path, exist_ok=True)
-history_fname = f"history_w{window_size}_ed{embedding_dim}_hd{hidden_dim}.txt"
+history_fname = f"history_w{window_size}_ed{embedding_dim}.txt"
 save_history_txt(history, os.path.join(history_file_path, history_fname))
 
 # Best checkpoint: 

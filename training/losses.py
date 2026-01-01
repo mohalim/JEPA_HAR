@@ -3,8 +3,6 @@ import torch
 import torch.nn.functional as F
 
 def invariance_loss(z1, z2):
-    z1 = F.normalize(z1, dim=-1)     # (B, seq_len, E)
-    z2 = F.normalize(z2, dim=-1)     # (B, seq_len, E)
     return F.mse_loss(z1, z2)
 
 def variance_loss(z, gamma=1.0, eps=1e-4):
@@ -13,13 +11,13 @@ def variance_loss(z, gamma=1.0, eps=1e-4):
     return torch.mean(F.relu(gamma - std))
 
 def covariance_loss(z):
-    z = z.reshape(-1, z.shape[-1])  # (B*seq_len, E)
-    B, E = z.shape
+    z = z.reshape(-1, z.shape[-1])  # (B * T, E)
+    N, E = z.shape
 
     z = z - z.mean(dim=0)
-    z = z / (z.std(dim=0) + 1e-4)
+    # z = z / (z.std(dim=0) + 1e-4)
 
-    cov = (z.T @ z) / (B - 1)          # (E, E)
+    cov = (z.T @ z) / (N - 1)          # (E, E)
     
     # Total sum of squared elements
     cov_total = (cov ** 2).sum()
@@ -35,16 +33,19 @@ def covariance_loss(z):
 def vicreg_loss(
     z1,
     z2,
-    sim_coeff=1.0, # Sensor embeddings have lower semantic richness than vision
+    sim_coeff=25.0, # Sensor embeddings have lower semantic richness than vision
     var_coeff=25.0,  
-    # cov_coeff=25.0,  # Need stronger decorrelation pressure because small cov_coeff lets embeddings collapse directionally
+    cov_coeff=5.0,  # based on https://arxiv.org/abs/2410.19560
 ):
+    # z1n = F.normalize(z1, dim=-1)
+    # z2n = F.normalize(z2, dim=-1)
+
     sim = invariance_loss(z1, z2)
     var = variance_loss(z1) + variance_loss(z2)
-    # cov = covariance_loss(z1) + covariance_loss(z2)
+    cov = covariance_loss(z1) + covariance_loss(z2)
 
-    loss = sim_coeff * sim + var_coeff * var # + cov_coeff * cov
-    return loss, sim, var #, cov
+    loss = sim_coeff * sim + var_coeff * var + cov_coeff * cov
+    return loss, sim, var, cov
 
 '''
 def cosine_sim_loss(z_pred, z_target):

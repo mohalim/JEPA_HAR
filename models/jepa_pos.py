@@ -22,14 +22,14 @@ class JEPA_SEQ(nn.Module):
 
         # ---- Encoders ----
         self.context_encoder = TransformerEncoder(
-            input_channels, window_size+window_size, embedding_dim, num_windows
+            input_channels, window_size, embedding_dim, num_windows
         )
 
         self.target_encoder = TransformerEncoder(
-            input_channels, window_size+window_size, embedding_dim, num_windows
+            input_channels, window_size, embedding_dim, num_windows
         )
 
-        self.predictor = Predictor(embedding_dim, hidden_dim)
+        self.predictor = Predictor(embedding_dim)
 
         # Initialize target encoder
         for ctx_param, tgt_param in zip(self.context_encoder.parameters(), self.target_encoder.parameters()):
@@ -57,23 +57,38 @@ class JEPA_SEQ(nn.Module):
         w1 = batch["w1"]
         w2m = batch["masked_w2"]
         mask = batch["mask"]
-        
-        #len_v = v1.size(1)
-        #B, Nv, E = v1.shape
+  
+        B, T, _ = w1.shape
 
-        z_ctx = self.context_encoder(w1, w2m, mask)      # (B, seq_len+seq_len, E)
+        T = w1.size(1)
+
+        z = self.context_encoder(w1, w2m, mask)      # (B, seq_len+seq_len, E)
+
+        z_ctx = z[:, T:, :]  # (B, seq_len, E)
 
         # ---- Target encoder (masked prediction) ----
         with torch.no_grad():
             w2 = batch["w2"]
             full_mask = torch.ones_like(mask, dtype=torch.bool)
-            z_tokens = self.target_encoder(w1, w2, mask=full_mask) # (B, seq_len+seq_len, E)
+            z = self.target_encoder(w1, w2, mask=full_mask) # (B, seq_len+seq_len, E)
 
-            T = w1.size(1)
             # select only window 2 tokens
-            z_tgt = z_tokens[:, T:, :]  # (B, seq_len, E)
+            z_tgt = z[:, T:, :]  # (B, seq_len, E)
 
-        # ---- Predictor head ----
-        z_pred = self.predictor(z_ctx)
+        # ---------------- Select MASKED positions ONLY ----------------
+        masked_idx = ~mask                          # False → masked (B, T)  
+        masked_idx_exp = masked_idx.unsqueeze(-1)   # (B, T, 1)
 
-        return z_pred, z_tgt
+        z_ctx_masked = z_ctx.masked_select(masked_idx_exp)
+        z_tgt_masked = z_tgt.masked_select(masked_idx_exp)
+
+        E = z_ctx.size(-1)
+        N_masked = masked_idx.sum(dim=1)[0].item()
+
+        z_ctx_masked = z_ctx_masked.view(B, N_masked, E)
+        z_tgt_masked = z_tgt_masked.view(B, N_masked, E)
+
+        # ---- Predictor ----
+        z_pred = self.predictor(z_ctx_masked)
+
+        return z_pred, z_tgt_masked

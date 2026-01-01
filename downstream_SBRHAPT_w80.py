@@ -57,8 +57,8 @@ model = JEPA_SEQ(
     window_size=window_size, hidden_dim=hidden_dim
     )
 
-checkpoint_dir = 'checkpoints'
-checkpoint_file = 'checkpoint_epoch_100_w80_ed256_hd384.pt'
+checkpoint_dir = f"checkpoints/w{window_size}"
+checkpoint_file = 'checkpoint_epoch_80.pt'
 model.load_state_dict(torch.load(os.path.join(checkpoint_dir, checkpoint_file), weights_only=True))
 model.eval()
 context_encoder = model.context_encoder
@@ -79,8 +79,8 @@ is_train = True
 checkpoint_clf_dir = f"checkpoints_clf/w{window_size}"
 if is_train:
     max_epochs = 100
-    lr = 1e-4
-    optimizer = torch.optim.AdamW(classifier_model.parameters(), lr=lr)
+    lr = 1e-3
+    optimizer = torch.optim.Adam(classifier_model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epochs, eta_min=1e-5)
     history = train_supervised(classifier_model, train_loader, val_loader,
                                optimizer, scheduler, device, max_epochs=max_epochs,

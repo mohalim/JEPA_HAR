@@ -42,8 +42,6 @@ def train_self_supervised(
     history = []
     cnt_early_stop = 0
 
-    # Optional: sanity early stopping (collapse detection)
-    # early_stopping = EarlyStopping(patience=200, delta=0.0, path=os.path.join(checkpoint_dir, "best_model.pt"))
     max_epochs = int(start_epoch + max_epochs)
     for epoch in tqdm(range(start_epoch, max_epochs), desc="Training Progress", position=0):
         # Training & Validation
@@ -64,7 +62,8 @@ def train_self_supervised(
 
         # Save checkpoints
         if epoch % checkpoint_freq == 0 or epoch == max_epochs:
-            checkpoint_path = os.path.join(checkpoint_dir, f"checkpoint_epoch_{epoch}.pt")
+            checkpoint_file = f"cpt_epoch{epoch}_w{model.num_windows}_edim{model.embedding_dim}.pt"
+            checkpoint_path = os.path.join(checkpoint_dir, checkpoint_file)
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Saved checkpoint: {checkpoint_path}")
 
@@ -78,13 +77,13 @@ def train_self_supervised(
           f"Tr Loss: {train_metrics['loss']:.3f} | "
           f"Tr Sim Loss: {train_metrics['sim_loss']:.3f} | "
           f"Tr Var Loss: {train_metrics['var_loss']:.3f} | "
-          # f"Tr Cov Loss: {train_metrics['cov_loss']:.3f} | "
+          f"Tr Cov Loss: {train_metrics['cov_loss']:.3f} | "
           f"Tr Std: {train_metrics['feat_std']:.3f} | "
           f"Tr Norm: {train_metrics['feat_norm']:.3f} | "
           f"Val Loss: {val_metrics['loss']:.3f} | "
           f"Val Sim Loss: {val_metrics['sim_loss']:.3f} | "
           f"Val Var Loss: {val_metrics['var_loss']:.3f} | "
-          # f"Val Cov Loss: {val_metrics['cov_loss']:.3f} | "
+          f"Val Cov Loss: {val_metrics['cov_loss']:.3f} | "
           f"Val Std: {val_metrics['feat_std']:.3f} | "
           f"Val Norm: {val_metrics['feat_norm']:.3f}")
 
@@ -114,7 +113,7 @@ def train_one_epoch(model, dataloader, optimizer, device, momentum, epoch):
 
         z_pred, z_target = model(batch)
 
-        loss, sim_loss, var_loss = vicreg_loss(z_pred, z_target.detach())
+        loss, sim_loss, var_loss, cov_loss = vicreg_loss(z_pred, z_target.detach())
 
         optimizer.zero_grad()
         loss.backward()
@@ -131,7 +130,7 @@ def train_one_epoch(model, dataloader, optimizer, device, momentum, epoch):
         total_loss += loss.item()
         total_sim += sim_loss.item()
         total_var += var_loss.item()
-        # total_cov += cov_loss.item()
+        total_cov += cov_loss.item()
         total_std += std
         total_norm += norm
         n_batches += 1
@@ -140,7 +139,7 @@ def train_one_epoch(model, dataloader, optimizer, device, momentum, epoch):
         "loss": total_loss / n_batches,
         "sim_loss": total_sim / n_batches,
         "var_loss": total_var / n_batches,
-        # "cov_loss": total_cov / n_batches,
+        "cov_loss": total_cov / n_batches,
         "feat_std": total_std / n_batches,
         "feat_norm": total_norm / n_batches,
     }
@@ -163,14 +162,14 @@ def validate(model, dataloader, device, epoch):
 
         z_pred, z_target = model(batch)
 
-        loss, sim_loss, var_loss = vicreg_loss(z_pred, z_target)
+        loss, sim_loss, var_loss, cov_loss = vicreg_loss(z_pred, z_target)
 
         std, norm = representation_stats(z_pred)
 
         total_loss += loss.item()
         total_sim += sim_loss.item()
         total_var += var_loss.item()
-        # total_cov += cov_loss.item()
+        total_cov += cov_loss.item()
         total_std += std
         total_norm += norm
         n_batches += 1
@@ -179,7 +178,7 @@ def validate(model, dataloader, device, epoch):
         "loss": total_loss / n_batches,
         "sim_loss": total_sim / n_batches,
         "var_loss": total_var / n_batches,
-        # "cov_loss": total_cov / n_batches,
+        "cov_loss": total_cov / n_batches,
         "feat_std": total_std / n_batches,
         "feat_norm": total_norm / n_batches,
     }
