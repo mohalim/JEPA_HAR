@@ -8,13 +8,13 @@ class Predictor(nn.Module):
     def __init__(
         self,
         num_patches=17,
-        embed_dim=256,
-        predictor_embed_dim=128,
-        n_heads=2,
-        n_layers=1,
+        embed_dim=64,
+        predictor_embed_dim=32,
+        predictor_n_heads=2,
+        predictor_n_layers=1,
         dropout=0.1,
         init_std=0.02,
-        norm_layer=nn.LayerNorm
+        norm_layer=nn.LayerNorm,
     ):
         super().__init__()
 
@@ -31,14 +31,17 @@ class Predictor(nn.Module):
         )
         self.predictor_pos_embed.data.copy_(torch.from_numpy(predictor_pos_embed).float().unsqueeze(0))
 
+        # for modeling window sequence
+        #self.window_embed = nn.Embedding(2, predictor_embed_dim)
+
         layer = nn.TransformerEncoderLayer(
             d_model=predictor_embed_dim,
-            nhead=n_heads,
+            nhead=predictor_n_heads,
             dim_feedforward=predictor_embed_dim,
             dropout=dropout,
             batch_first=True
         )
-        self.transformer = nn.TransformerEncoder(layer, n_layers)
+        self.transformer = nn.TransformerEncoder(layer, predictor_n_layers)
 
         self.predictor_norm = norm_layer(predictor_embed_dim)
         self.predictor_proj = nn.Linear(predictor_embed_dim, embed_dim, bias=True)
@@ -60,47 +63,65 @@ class Predictor(nn.Module):
             if m.bias is not None:
                 nn.init.constant_(m.bias, 0)
 
-    def forward(self, x, enc_mask_indices, pred_mask_indices):
+    def forward(self, ctx, enc_mask_indices, pred_mask_indices):
+    #def forward(self, ctx):
         """
-        x: (2B, v, E) - context embeddings for window 1 and window 2, the embeddings are stacked along Batch dimension
-        enc_mask_indices: (B, ei,) - batch, visible indices
-        pred_mask_indices: (B, pi,) - batch, predict indices
+        ctx: (B, v, E) - context embeddings for both windows
+        enc_mask_indices: [(B, ei,), (B, ei)] - batch, visible indices
+        pred_mask_indices: (B, pi,), (B, pi)] - batch, predict indices
         """
-        assert (enc_mask_indices is not None) and (pred_mask_indices is not None), \
-            'Cannot run predictor without mask indices'
+        #assert (enc_mask_indices is not None) and (pred_mask_indices is not None), \
+        #    'Cannot run predictor without mask indices'
         
         ei = torch.concat(enc_mask_indices, dim=0)      # (2B, e)
         pi = torch.concat(pred_mask_indices, dim=0)     # (2B, p)
+        # ei = enc_mask_indices[0]
+        # pi = pred_mask_indices[1]
         
         # Batch Size
         # B = int(B / 2)
 
         # Map from encoder-dim to predictor-dim
-        x = self.predictor_embed(x)
-        B, _, E = x.shape
+        ctx = self.predictor_embed(ctx)     # embeddings for both windows - stacked along B dimension
+        B, _, E = ctx.shape             
         
-        # Add positional embedding to context (x) embeddings
-        x_pos_embed = self.predictor_pos_embed.repeat(B, 1, 1)      # (B, N, E)
-        x += apply_masks(x_pos_embed, ei)                           # (B, e, E)
+        # Create and add positional embedding to context (x) embeddings
+        ctx_pos_embed = self.predictor_pos_embed.repeat(B, 1, 1)      # (2B, N, E)
+        ctx += apply_masks(ctx_pos_embed, ei)                         # (2B, e, E)
+        # ctx += ctx_pos_embed
 
         # Add positional embedding to masked (target) embeddings
-        pos_embs = self.predictor_pos_embed.repeat(B, 1, 1)         # (B, N, E)
-        pos_embs = apply_masks(pos_embs, pi)                        # (B, p, E)
+        pos_embs = self.predictor_pos_embed.repeat(B, 1, 1)         # (2B, N, E)
+        pos_embs = apply_masks(pos_embs, pi)                        # (2B, p, E)
 
         pred_tokens = self.mask_token.repeat(pos_embs.size(0), pos_embs.size(1), 1) # (B, p, E)
         pred_tokens += pos_embs
 
-        _, ctx_size, _ = x.shape
-
         # Concat mask tokens with x
-        x = torch.cat([x, pred_tokens], dim=1)
+        # concat along batch dim (if dim=0) possible if ei shape = pi shape, (4B, e/p, E)
+        # concat along patch dimension (if dim=1) if ei shape != pi shape, (2B, e + p, E)
+        x = torch.cat([ctx, pred_tokens], dim=1)        # (2B, e + p, E)
+        
+        B_ctx_mask, ctx_size, _ = ctx.shape
 
+        '''
+        # Add window embedding
+        window_idx = torch.tensor([0, 1], device=x.device)
+        win_emb = self.window_embed(window_idx)   # (2, E)
+
+        win_emb = win_emb.repeat_interleave(B_ctx_mask, dim=0) # (2B, E)
+        x = x + win_emb.unsqueeze(1)                # (4B, e/p, E)
+        '''
         x = self.transformer(x)
 
         x = self.predictor_norm(x)
 
         # Return preds for mask tokens
+        # if concat dim=0
+        # x = x[B:]
+        # if concat dim=1
         x = x[:, ctx_size:]
+        
         z = self.predictor_proj(x)
 
         return z

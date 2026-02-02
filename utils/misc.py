@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import os
 import math
+from tqdm import tqdm
 
 class EarlyStopping:
     """
@@ -14,6 +15,7 @@ class EarlyStopping:
         monitor="loss",      # "loss" or "acc"
         patience=7,
         delta=0.0,
+        stage_two=False,
         verbose=False
     ):
         assert monitor in ["loss", "acc"]
@@ -27,6 +29,10 @@ class EarlyStopping:
         self.counter = 0
         self.early_stop = False
         self.best_epoch = None
+        if not stage_two:
+            self.f_stage = "stage1"
+        else:
+            self.f_stage = "stage2"
 
         # Initialize best value
         if monitor == "loss":
@@ -76,9 +82,26 @@ class EarlyStopping:
             )
 
         checkpoint_path = os.path.join(
-            self.dir_path, f"best_model_epoch_{epoch}.pt"
+            self.dir_path, f"best_model_{self.f_stage}_epoch{epoch}.pt"
         )
         torch.save(model.state_dict(), checkpoint_path)
+
+class WeightDecayScheduler:
+    def __init__(self, optimizer, wd_start, wd_end, total_steps):
+        self.optimizer = optimizer
+        self.wd_start = wd_start
+        self.wd_end = wd_end
+        self.total_steps = total_steps
+        self.step_num = 0
+
+    def step(self):
+        wd = self.wd_end + (self.wd_start - self.wd_end) * \
+             (1 - self.step_num / self.total_steps)
+
+        for group in self.optimizer.param_groups:
+            group["weight_decay"] = wd
+
+        self.step_num += 1
 
 def _no_grad_trunc_normal_(tensor, mean, std, a, b):
     # Cut & paste from PyTorch official master until it's in a few official releases - RW
@@ -161,46 +184,84 @@ def get_1d_sincos_pos_embed(embed_dim, length, cls_token=False):
         pos_embed = np.concatenate([np.zeros([1, embed_dim]), pos_embed], axis=0)
     return pos_embed
 
-def apply_masks(x, mask_indices, is_equal_indices=True):
+def apply_masks(x, mask_indices):
+    B = int(len(x) / 2)
+    _, N, E = x.shape
+    x = x.view(2, B, N, E)
+
+    _, m = mask_indices.shape
+    mask_indices = mask_indices.view(2, B, m)   # (2B, m) -> (K, B, m)
+
+    # Expand indices for gather
+    index = mask_indices.unsqueeze(-1).expand(-1, -1, -1, E)  # (K, B, m, E)
+
+    # Gather selected patches
+    x_selected = torch.gather(x, dim=2, index=index)           # (K, B, m, E)
+
+    # x_selected = x_selected.permute(1, 0, 2, 3)
+    K, B, m, E = x_selected.shape
+    x_selected = x_selected.reshape(K*B, m, E)                  # (2B, m, E)
+
+    return x_selected
+
+def apply_channel_masks(x, mask_indices):
     '''
-    x: (2B, N, E) - input embeddings  
+    x: (B, L, C, E)
+    mask_indices: (B, m)
+    '''
+
+    _, L, _, E = x.shape
+
+    # Expand indices for gather
+    index = mask_indices.unsqueeze(1).unsqueeze(-1).expand(-1, L, -1, E)  # (B, 1, m, E)
+
+    # Gather selected patches
+    x_selected = torch.gather(x, dim=2, index=index)           # (K, B, m, E)
+
+    # x_selected = x_selected.permute(1, 0, 2, 3)
+    B, L, m, E = x_selected.shape
+    x_selected = x_selected.reshape(B, L, m*E)                  # (2B, m, E)
+
+    return x_selected
+
+# Pass JEPA model
+def extract_embeddings(model, dataloader, device, dim=1):
+    model.eval()
+    embeddings = []
+    labels = []
+
+    with torch.no_grad():
+        for batch in dataloader:
+            batch = move_to_device(batch, device)
+            x = batch["windows"]        # (B, L, C)
+            y = batch["labels"][1]       # (B,)
+            
+            # Forward through encoder only
+            z = model.context_encoder(x)   # (2B, N, E)
+            B, N, E = z.shape
+            B_half = B // 2
+            z = z.reshape(B_half, 2, N, E)      # (B, 2, N, E)
+            z = z.reshape(B_half, 2*N, E)       # (B, 2N, E)
+
+            z = z.mean(dim=dim)              # (B, E)
+
+            embeddings.append(z.cpu().numpy())
+            labels.append(y.cpu().numpy())
+
+    embeddings = np.concatenate(embeddings, axis=0)
+    labels = np.concatenate(labels, axis=0)
+
+    return embeddings, labels
+
+
+# def apply_masks(x, mask_indices, is_equal_indices=True):
+    '''
+    x: (B, N, E) - input embeddings  
     mask_indices: list of indices for visible and target (predict) patches
     is_equal_indices: to indicate if the indices for both visible and target patchs are the same or not
     '''
-    if is_equal_indices:
-        _, N, E = x.shape
-
-        # Expand indices for gather
-        index = mask_indices.unsqueeze(-1).expand(-1, -1, E)  # (B, m, E)
-
-        # Gather selected patches
-        x_selected = torch.gather(x, dim=1, index=index)           # (B, m, E)
-
-        return x_selected
-    
-    else:
-        B = int(len(x) / 2)
-        _, N, E = x.shape
-        x = x.view(2, B, N, E)
-
-        _, m = mask_indices.shape
-        mask_indices = mask_indices.view(2, B, m)   # (K, B, m)
-
-        # Expand indices for gather
-        index = mask_indices.unsqueeze(-1).expand(-1, -1, -1, E)  # (K, B, m, E)
-
-        # Gather selected patches
-        x_selected = torch.gather(x, dim=2, index=index)           # (K, B, m, E)
-
-        # x_selected = x_selected.permute(1, 0, 2, 3)
-        K, B, m, E = x_selected.shape
-        x_selected = x_selected.reshape(K*B, m, E)                  # (2B, m, E)
-
-        return x_selected
-
-'''
-def apply_masks(x, mask_indices):
-    _, _, E = x.shape
+    '''
+    _, N, E = x.shape
 
     # Expand indices for gather
     index = mask_indices.unsqueeze(-1).expand(-1, -1, E)  # (B, m, E)
@@ -209,3 +270,6 @@ def apply_masks(x, mask_indices):
     x_selected = torch.gather(x, dim=1, index=index)           # (B, m, E)
 
     return x_selected'''
+        
+
+

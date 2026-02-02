@@ -7,20 +7,107 @@ from data.dataset import BaseSensorDataset
 
 # Sequential JEPA Dataset
 class SequentialSensorDataset(BaseSensorDataset):
+    '''
+    This dataset returns indices of visible and masked patches
+    '''
     def __init__(self, root_dir, 
                  window_size=102, 
-                 overlap=0.5,
+                 overlap=0.1,
                  patch_size=17,
                  num_windows=2,
                  masking_factor=0.5,
+                 reverse_ratio=0.5,
+                 noise_std=0.01,
                  **kwargs):
         super().__init__(root_dir, window_size, overlap, **kwargs)
         self.num_windows = num_windows         # number of windows in sequence
         self.num_patches = int(window_size / patch_size)
+        self.patch_size = patch_size
+        self.masking_factor = masking_factor
+        self.reverse_ratio = reverse_ratio
+        self.noise_std = noise_std
+        
+        # Get index mapping
+        fname_index_map = f"index_map_w{window_size}_k{num_windows}_ov{int(overlap*100)}.pkl"
+        with open(os.path.join(root_dir, fname_index_map), 'rb') as f:
+            self.index_map = pickle.load(f) # list of (npy_path, start_idx)
+
+    def apply_channel_noise(self, window):
+        noise = torch.randn_like(window) * self.noise_std
+        return window + noise
+    
+    def reverse_channels(self, window):
+        window = window.clone()
+        C = window.size(1)
+        num_reverse = int(C * self.reverse_ratio)
+        if num_reverse == 0:
+            return window
+        channels_to_reverse = torch.randperm(C)[:num_reverse]
+        window[:, channels_to_reverse] = window[:, channels_to_reverse].flip(0)
+        return window
+
+    def __len__(self):
+        return len(self.index_map)
+
+    def __getitem__(self, idx):
+        npy_path, start = self.index_map[idx]
+        data = self._load_file(npy_path)
+
+        # windows = []
+        windows, enc_mask_idx, pred_mask_idx = [], [], []
+        
+        # Use the same mask indices for both windows
+        num_mask = max(1, round(self.masking_factor * self.num_patches))      
+
+        for i in range(self.num_windows):
+            s = start + i * self.stride
+            window = data[s : s + self.window_size]  # [T, C]
+            window = torch.from_numpy(window)
+
+            is_apply_noise = torch.randint(low=0, high=2, size=(1,))
+            if is_apply_noise:
+                window = self.apply_channel_noise(window)
+            
+            window = self.reverse_channels(window)
+
+            windows.append(window)
+
+            # offset = i * self.num_patches
+            global_idx = torch.arange(self.num_patches) #+ offset
+
+            mask_local_idx = torch.randperm(self.num_patches)[:num_mask] # Generate random values for masking
+            mask_local_idx, _ = torch.sort(mask_local_idx)  # ensure ordered masking
+            mask = torch.zeros(self.num_patches, dtype=torch.bool)
+            mask[mask_local_idx] = True
+
+            enc_mask_idx.append(global_idx[~mask])
+            pred_mask_idx.append(global_idx[mask])
+        
+        return {
+            "windows": windows,                     # list[k] of (L, C)
+            "enc_mask_idx": enc_mask_idx,           # (ei,) - visible patch indices
+            "pred_mask_idx": pred_mask_idx,         # (pi,) - masked patch indices
+        }
+
+
+class SequentialSensorChannelDataset(BaseSensorDataset):
+    '''
+    This dataset returns indices of visible and masked channels
+    '''
+    def __init__(self, root_dir, 
+                 window_size=102, 
+                 overlap=0.1,
+                 num_channels=6,
+                 num_windows=2,
+                 masking_factor=0.5,
+                 **kwargs):
+        super().__init__(root_dir, window_size, overlap, **kwargs)
+        self.num_channels = num_channels
+        self.num_windows = num_windows         # number of windows in sequence
         self.masking_factor = masking_factor
         
         # Get index mapping
-        fname_index_map = f"index_map_w{window_size}_k{num_windows}.pkl"
+        fname_index_map = f"index_map_w{window_size}_k{num_windows}_ov{int(overlap*100)}.pkl"
         with open(os.path.join(root_dir, fname_index_map), 'rb') as f:
             self.index_map = pickle.load(f) # list of (npy_path, start_idx)
 
@@ -31,84 +118,59 @@ class SequentialSensorDataset(BaseSensorDataset):
         npy_path, start = self.index_map[idx]
         data = self._load_file(npy_path)
 
+        # windows = []
         windows, enc_mask_idx, pred_mask_idx = [], [], []
-
+        
         # Use the same mask indices for both windows
-        num_mask = max(1, round(self.masking_factor * self.num_patches))
-        mask_local_idx = torch.randperm(self.num_patches)[:num_mask] # Generate two random values
-        mask_local_idx, _ = torch.sort(mask_local_idx)  # ensure ordered masking
+        num_mask = max(1, round(self.masking_factor * self.num_channels))      
 
         for i in range(self.num_windows):
             s = start + i * self.stride
             window = data[s : s + self.window_size]  # [T, C]
-            
             windows.append(window)
-            global_idx = torch.arange(self.num_patches) # + offset
 
-            mask = torch.zeros(self.num_patches, dtype=torch.bool)
+            # offset = i * self.num_patches
+            global_idx = torch.arange(self.num_channels) #+ offset
+
+            mask_local_idx = torch.randperm(self.num_channels)[:num_mask] # Generate random values for masking
+            mask_local_idx, _ = torch.sort(mask_local_idx)  # ensure ordered masking
+            mask = torch.zeros(self.num_channels, dtype=torch.bool)
             mask[mask_local_idx] = True
 
             enc_mask_idx.append(global_idx[~mask])
             pred_mask_idx.append(global_idx[mask])
+        
+        return {
+            "windows": windows,                     # list[k] of (L, C)
+            "enc_mask_idx": enc_mask_idx,           # (ei,) - visible patch indices
+            "pred_mask_idx": pred_mask_idx,         # (pi,) - masked patch indices
+        }
+
+        '''
+        # ---- window 1: visible (context) ----
+        s1 = start
+        w1 = data[s1 : s1 + self.window_size]
+        windows.append(w1)
+
+        #global_idx_w1 = torch.arange(self.num_patches)
+        #enc_mask_idx.append(global_idx_w1)              # all visible
+        #pred_mask_idx.append(torch.empty(0, dtype=torch.long))  # nothing to predict
+
+        # ---- window 2: masked (target) ----
+        s2 = start + self.stride
+        w2 = data[s2 : s2 + self.window_size]
+        windows.append(w2)
+        
+        #global_idx_w2 = enc = torch.arange(self.num_patches)
+        #enc_mask_idx.append(torch.empty(0, dtype=torch.long))   # nothing visible
+        #pred_mask_idx.append(global_idx_w2)                     # predict all patches
 
         return {
             "windows": windows,                     # list[k] of (L, C)
-            "enc_mask_idx": enc_mask_idx,           # list[k] of (ei,) - visible patch indices
-            "pred_mask_idx": pred_mask_idx,         # list[k] of (pi,) - masked patch indices
-        }
+            #"enc_mask_idx": enc_mask_idx,           # (ei,) - visible patch indices
+            #"pred_mask_idx": pred_mask_idx,         # (pi,) - masked patch indices
+        }'''
 
-# =======================
-# Sequential Supervised Dataset
-# =======================
-class SequentialSupervisedSensorDataset(BaseSensorDataset):
-    def __init__(
-        self,
-        root_dir,
-        window_size=100,
-        overlap=0.5,
-        num_windows=2,    
-        **kwargs
-    ):
-        super().__init__(root_dir, window_size, overlap, num_windows, **kwargs)
-        self.num_windows = num_windows
-
-    def temporal_block_mask(self):
-        """
-        Returns a boolean mask of shape (T,)
-        True = keep token
-        False = mask token
-        """
-        num_mask = int(self.window_size * self.masking_factor)
-        start = torch.randint(0, self.window_size - num_mask + 1, (1,)).item()
-        mask = torch.ones(self.window_size, dtype=torch.bool)
-        mask[start : start + num_mask] = False
-        return mask
-
-    def __getitem__(self, idx):
-        npy_path, start = self.index_map[idx]
-        data = self._load_file(npy_path)
-
-        windows = []
-        labels = []
-        for i in range(self.num_windows):
-            s = start + i * self.stride
-
-            # Features only, last column is label
-            window = data[s : s + self.window_size, :-1]
-            window = self._apply_scaling(window)
-                        
-            x = torch.from_numpy(window)  # (T, C)
-            windows.append(x)
-
-            label = torch.from_numpy(data[s : s + self.window_size, -1])
-            y = torch.mode(label).values - 1
-            labels.append(y)
-        
-        return {
-            "w1": windows[0],  # (T, C)
-            "w2": windows[1],  # (T, C)
-            "labels": labels  # (num_windows,)
-        }
 
 
 '''

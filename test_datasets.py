@@ -1,23 +1,41 @@
-from data.dataset_seq import SequentialPatchSensorDataset
+from data.dataset_seq import SequentialSensorDataset
 from torch.utils.data import DataLoader
 
-dataset = SequentialPatchSensorDataset(
-    root_dir="../../Datasets/REALDISP_AccGyro/train_npy/",
-    window_size=100,
+batch_size = 4
+window_size = 102
+num_windows = 2
+channels = 6
+patch_size = 17
+
+train_path_dataset = "../../Datasets/REALDISP_AccGyro/train_npy/"
+val_path_dataset = "../../Datasets/REALDISP_AccGyro/val_npy/"
+
+train_dataset = SequentialSensorDataset(
+    root_dir=train_path_dataset,
+    window_size=window_size,
     overlap=0.5,
-    num_patches=5,
-    masking_factor=0.5
+    patch_size=patch_size,
+    num_windows=num_windows,
 )
 
-loader = DataLoader(dataset, batch_size=10, shuffle=True)
+val_dataset = SequentialSensorDataset(
+    root_dir=val_path_dataset,
+    window_size=window_size,
+    overlap=0.5,
+    patch_size=patch_size,
+    num_windows=num_windows,
+)
 
-for data in loader:
+train_loader = DataLoader(train_dataset, 
+                          batch_size=batch_size, 
+                          shuffle=False, 
+                          num_workers=4,
+                          persistent_workers=True,
+                          pin_memory=True)
+val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+
+for data in train_loader:
+
     w1,w2 = data["windows"]
-    v1_idx, v2_idx = data["visible_idx"]
-    m1_idx, m2_idx = data["masked_idx"]
-    print(w1.shape)
-    print(w2.shape)
-    print(v1_idx, v2_idx)
-    print(m1_idx, m2_idx)
 
     break

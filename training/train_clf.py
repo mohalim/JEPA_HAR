@@ -17,23 +17,24 @@ def train_supervised(
         device,
         max_epochs=100,
         checkpoint_dir="checkpoints_clf",
-        patience = 10
+        patience = 10,
+        early_stop_metric='acc',
+        stage_two=False
 ):
     
     os.makedirs(checkpoint_dir, exist_ok=True)
 
     history = []
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
     early_stopping = EarlyStopping(dir_path=checkpoint_dir, 
-                                   monitor='acc', 
+                                   monitor=early_stop_metric, 
                                    patience=patience, 
-                                   delta=0.0)
+                                   delta=0.0,
+                                   stage_two=stage_two)
 
     for epoch in tqdm(range(1, max_epochs + 1), desc="Training Progress", position=0):
         train_metrics = train_one_epoch(model, train_loader, optimizer, criterion, device, epoch)
-        val_metrics = validate(
-            model, val_loader, criterion, device, epoch
-        )
+        val_metrics = validate(model, val_loader, criterion, device, epoch)
 
         scheduler.step()
 
@@ -80,12 +81,10 @@ def train_one_epoch(model, dataloader, optimizer, criterion, device, epoch):
         leave=False
     ):
         batch = move_to_device(batch, device)
-
-        x1 = batch["w1"]          # (B, T, C)
-        x2 = batch["w2"]
+        x = batch["windows"]
         y = batch["labels"][1]       # (B,)
 
-        logits = model(x1, x2)        # (B, num_classes)
+        logits = model(x)        # (B, num_classes)
         
         loss = criterion(logits, y.long())
 
@@ -121,11 +120,10 @@ def validate(model, dataloader, criterion, device, epoch):
     ):
         batch = move_to_device(batch, device)
 
-        x1 = batch["w1"]          # (B, T, C)
-        x2 = batch["w2"]
+        x = batch["windows"]
         y = batch["labels"][1]       # (B,)
 
-        logits = model(x1, x2)        # (B, num_classes)
+        logits = model(x)        # (B, num_classes)
 
         loss = criterion(logits, y.long())
 
@@ -157,11 +155,10 @@ def evaluate(model, dataloader, criterion, device):
     ):
         batch = move_to_device(batch, device)
 
-        x1 = batch["w1"]          # (B, T, C)
-        x2 = batch["w2"]
+        x = batch["windows"]
         y = batch["labels"][1]       # (B,)
 
-        logits = model(x1, x2)        # (B, num_classes)
+        logits = model(x)        # (B, num_classes)
 
         loss = criterion(logits, y.long())
 
