@@ -1,7 +1,5 @@
 #ignore folders
 bin/
-checkpoints/
-checkpoints_clf/
 include/
 lib/
 lib64/
