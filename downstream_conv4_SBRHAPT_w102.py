@@ -20,7 +20,7 @@ is_winseq = True
 top_k = 4       # number of final layers of encoder to fine-tune
 
 exp_num = "conv4_e256"
-is_train = True
+is_train = False
 is_stage_two = True
 
 window_size = 102

@@ -10,6 +10,7 @@ from models.jepa_xformer import JEPA_SEQ
 from models.classifier_xformer import JEPAClassifier
 from data.dataset_supervised import SequentialSupervisedSensorDataset
 from training.train_clf import train_supervised, evaluate
+from utils.logging import setup_logger, log_evaluation
 
 warnings.filterwarnings('ignore')
 
@@ -19,8 +20,8 @@ exp_num = "xformer1_e384"
 is_winseq = True
 top_k = 4       # number of final layers of encoder to fine-tune
 
-is_train = True
-is_stage_two = True
+is_train = False
+is_stage_two = False
 
 window_size = 102
 overlap = 0.5
@@ -160,13 +161,16 @@ if checkpoint_clf_dir is None:
     classifier_model = JEPAClassifier(context_encoder, 
                                       classifier_head,
                                       freeze_encoder=True).to(device)
-    
+
+logger = setup_logger(checkpoint_clf_dir)
+
 all_files = glob.glob(os.path.join(checkpoint_clf_dir, "*.pt"))
 best_checkpoint = all_files[-1]
 print(f"Loading best model: {best_checkpoint}")
 classifier_model.load_state_dict(torch.load(best_checkpoint, weights_only=True))
 
 test_metrics = evaluate(classifier_model, test_loader, torch.nn.CrossEntropyLoss(), device)
+log_evaluation(logger, test_metrics["acc"], test_metrics["conf_matrix"], test_metrics["clf_report"])
 print(test_metrics["acc"])
 print(test_metrics["conf_matrix"])
 print(test_metrics["clf_report"])

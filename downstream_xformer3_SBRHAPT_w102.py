@@ -162,7 +162,7 @@ if checkpoint_clf_dir is None:
                                       classifier_head,
                                       freeze_encoder=True).to(device)
 
-logger = setup_logger(checkpoint_clf_dir, "results.log", "evaluation")
+logger = setup_logger(checkpoint_clf_dir)
 
 all_files = glob.glob(os.path.join(checkpoint_clf_dir, "*.pt"))
 best_checkpoint = all_files[-1]

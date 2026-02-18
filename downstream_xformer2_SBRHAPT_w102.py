@@ -11,6 +11,7 @@ from models.classifier_xformer import JEPAClassifier
 from data.dataset_supervised import SequentialSupervisedSensorDataset
 from training.train_clf import train_supervised, evaluate
 from utils.logging import setup_logger, log_evaluation
+from utils.logging import setup_logger, log_evaluation
 
 warnings.filterwarnings('ignore')
 
@@ -20,8 +21,8 @@ is_winseq = True
 top_k = 4       # number of final layers of encoder to fine-tune
 
 exp_num = "xformer2_e440"
-is_train = True
-is_stage_two = True
+is_train = False
+is_stage_two = False
 
 window_size = 102
 overlap = 0.5
@@ -162,7 +163,7 @@ if checkpoint_clf_dir is None:
                                       classifier_head,
                                       freeze_encoder=True).to(device)
 
-logger = setup_logger(checkpoint_clf_dir, "results.log", "evaluation")
+logger = setup_logger(checkpoint_clf_dir)
 
 all_files = glob.glob(os.path.join(checkpoint_clf_dir, "*.pt"))
 best_checkpoint = all_files[-1]
