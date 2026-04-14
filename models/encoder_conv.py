@@ -69,7 +69,6 @@ class ConvolutionalEncoder(nn.Module):
         norm_layer=nn.LayerNorm
     ):
         super().__init__()
-
         # Patch embedding for 1D time series
         self.patch_embed = PatchEmbed1D(
             seq_length=seq_length,
@@ -89,7 +88,10 @@ class ConvolutionalEncoder(nn.Module):
         self.blocks = nn.ModuleList([
             ConvBlock(embed_dim, k_size) for k_size in kernel_sizes
         ])
-        self.norm = norm_layer(embed_dim)
+        if norm_layer is not None:
+            self.norm = norm_layer(embed_dim)
+        else:
+            self.norm = None
         self.init_std = init_std
         self.apply(self._init_weights)
 

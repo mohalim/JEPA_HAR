@@ -102,7 +102,7 @@ linear_model = JEPALinearProbe(context_encoder,
                                num_classes=num_classes,
                                freeze_encoder=True).to(device)
 
-checkpoint_clf_dir = f"checkpoints_clf/w{window_size}/probe_{exp_num}"
+checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/probe_{exp_num}"
 clf_lr = 1e-3
 
 optimizer = torch.optim.AdamW(linear_model.parameters(), lr=clf_lr, betas=(0.9, 0.99))

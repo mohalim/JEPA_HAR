@@ -2,9 +2,13 @@ import torch
 import os
 import glob
 import torch.nn as nn
-from tqdm import tqdm
-from torch.utils.data import DataLoader
 import warnings
+import shutil
+
+from pathlib import Path
+from tqdm import tqdm
+
+from torch.utils.data import DataLoader
 
 from models.jepa_xformer import JEPA_SEQ
 from models.classifier_xformer import JEPAClassifier
@@ -21,8 +25,9 @@ is_winseq = True
 top_k = 4       # number of final layers of encoder to fine-tune
 
 exp_num = "xformer2_e440"
-is_train = False
-is_stage_two = False
+is_train = 0
+is_log_result = 1
+is_stage_two = 0
 
 window_size = 102
 overlap = 0.5
@@ -92,7 +97,7 @@ model = JEPA_SEQ(
     is_seq=is_winseq
     ).to(device)
 
-checkpoint_file = 'cpt_epoch80_w102_edim440.pt'
+checkpoint_file = 'cpt_epoch50_w102_edim440.pt'
 model.load_state_dict(torch.load(os.path.join(checkpoint_dir, checkpoint_file), weights_only=True))
 model.eval()
 context_encoder = model.context_encoder
@@ -107,31 +112,38 @@ classifier_head = nn.Sequential(
             )
 
 checkpoint_clf_dir = None
-
+# Default value
+enc_lr = 5e-4
+clf_lr = 1e-3
 if is_train:
     max_epochs = 100
-    patience = 20
+    patience = max_epochs
 
     classifier_model = JEPAClassifier(context_encoder, 
                                       classifier_head,
                                       freeze_encoder=True).to(device)
 
     if not is_stage_two:
-        checkpoint_clf_dir = f"checkpoints_clf/w{window_size}/stage1_{exp_num}"
+        checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage1_{exp_num}"
         clf_lr = 1e-3
         
         optimizer = torch.optim.AdamW(classifier_model.parameters(), lr=clf_lr, betas=(0.9, 0.99))
 
+        # Remove existing folders and checkpoints
+        folder = Path(checkpoint_clf_dir)
+        if folder.exists() and folder.is_dir():
+            shutil.rmtree(folder)
+
     else:
-        checkpoint_clf_dir = f"checkpoints_clf/w{window_size}/stage1_{exp_num}" # to load best model from stage1
+        checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage1_{exp_num}" # to load best model from stage1
         enc_lr = 5e-4
         clf_lr = 1e-3
         
-        checkpoint_clf_file = 'best_model_stage1_epoch46.pt'
+        checkpoint_clf_file = 'best_model_stage1_epoch80.pt'
         classifier_model.load_state_dict(torch.load(os.path.join(checkpoint_clf_dir, checkpoint_clf_file),
                                                     weights_only=True))
         
-        checkpoint_clf_dir = f"checkpoints_clf/w{window_size}/stage2_{exp_num}" # for saving best model in stage2
+        checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage2_{exp_num}" # for saving best model in stage2
         classifier_model.unfreeze_last_k_layers(k=top_k)
         optimizer = torch.optim.AdamW(
             [
@@ -147,6 +159,10 @@ if is_train:
                 }
             ]
         )
+        # Remove existing folders and checkpoints
+        folder = Path(checkpoint_clf_dir)
+        if folder.exists() and folder.is_dir():
+            shutil.rmtree(folder)
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epochs, eta_min=1e-6)
     history = train_supervised(classifier_model, train_loader, val_loader,
@@ -155,23 +171,41 @@ if is_train:
 
 if checkpoint_clf_dir is None:
     if not is_stage_two:
-        checkpoint_clf_dir = f"checkpoints_clf/w{window_size}/stage1_{exp_num}"
+        checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage1_{exp_num}"
     else:
-        checkpoint_clf_dir = f"checkpoints_clf/w{window_size}/stage2_{exp_num}"
+        checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage2_{exp_num}"
     
     classifier_model = JEPAClassifier(context_encoder, 
                                       classifier_head,
                                       freeze_encoder=True).to(device)
 
-logger = setup_logger(checkpoint_clf_dir)
 
-all_files = glob.glob(os.path.join(checkpoint_clf_dir, "*.pt"))
-best_checkpoint = all_files[-1]
-print(f"Loading best model: {best_checkpoint}")
-classifier_model.load_state_dict(torch.load(best_checkpoint, weights_only=True))
+if is_train:
+    all_files = glob.glob(os.path.join(checkpoint_clf_dir, "*.pt"))
+    path_checkpoint = all_files[-1]
+else:
+    stageNo = 1 if not is_stage_two else 2
+    best_checkpoint = f'best_model_stage{stageNo}_epoch70.pt'
+    path_checkpoint = os.path.join(checkpoint_clf_dir, best_checkpoint)
 
+print(f"Loading best model: {path_checkpoint}")
+classifier_model.load_state_dict(torch.load(path_checkpoint, weights_only=True))
 test_metrics = evaluate(classifier_model, test_loader, torch.nn.CrossEntropyLoss(), device)
-log_evaluation(logger, test_metrics["acc"], test_metrics["conf_matrix"], test_metrics["clf_report"])
-print(test_metrics["acc"])
+
+if is_log_result:
+    result_file_path = os.path.join(checkpoint_clf_dir, "results.log")
+    if os.path.exists(result_file_path):
+        os.remove(result_file_path)
+    logger = setup_logger(checkpoint_clf_dir, "results.log", "evaluation")
+    if is_stage_two:
+        logger.info(f"enc_lr: {enc_lr}")
+    logger.info(f"clf_lr: {clf_lr}")
+    logger.info(f"Encoder: {checkpoint_file}")
+    logger.info(f"Loading best model: {path_checkpoint}")
+    log_evaluation(logger, test_metrics["acc"], test_metrics["conf_matrix"], test_metrics["clf_report"])
+
 print(test_metrics["conf_matrix"])
 print(test_metrics["clf_report"])
+print(test_metrics["acc"])
+
+

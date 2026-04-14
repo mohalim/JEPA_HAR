@@ -97,7 +97,7 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=base_lr, betas=(0.9, 0.99))
 
 if is_load:
     start_epoch = 100
-    checkpoint_file = 'checkpoint_epoch_125_w80_ed256_hd384.pt'
+    checkpoint_file = 'cpt_epoch80_w102_edim384.pt'
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_file)
     model.load_state_dict(torch.load(checkpoint_path, weights_only=True))
     history = train_self_supervised(model, train_loader, val_loader, optimizer,

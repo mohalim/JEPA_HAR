@@ -6,7 +6,9 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import confusion_matrix, classification_report
 
-from utils.misc import move_to_device, EarlyStopping
+from utils.misc import move_to_device
+from utils.earlystopping import EarlyStopping
+from utils.logging import setup_logger, log_clf_metrics, log_checkpoint
 
 def train_supervised(
         model,
@@ -17,40 +19,59 @@ def train_supervised(
         device,
         max_epochs=100,
         checkpoint_dir="checkpoints_clf",
+        checkpoint_freq=5,
         patience = 10,
         early_stop_metric='acc',
         stage_two=False
 ):
     
+    if not stage_two:
+        f_stage = "stage1"
+    else:
+        f_stage = "stage2"
+
     os.makedirs(checkpoint_dir, exist_ok=True)
+
+    logger = setup_logger(checkpoint_dir)
 
     history = []
     criterion = torch.nn.CrossEntropyLoss(label_smoothing=0.1)
-    early_stopping = EarlyStopping(dir_path=checkpoint_dir, 
+    
+    early_stopping = EarlyStopping(dir_path=checkpoint_dir,
+                                   f_stage=f_stage,
                                    monitor=early_stop_metric, 
                                    patience=patience, 
-                                   delta=0.0,
-                                   stage_two=stage_two)
-
+                                   delta=0.0)
+    
     for epoch in tqdm(range(1, max_epochs + 1), desc="Training Progress", position=0):
         train_metrics = train_one_epoch(model, train_loader, optimizer, criterion, device, epoch)
         val_metrics = validate(model, val_loader, criterion, device, epoch)
 
+        log_clf_metrics(logger, epoch, train_metrics, val_metrics)
+
         scheduler.step()
 
-        early_stopping(
-            epoch=epoch,
-            val_loss=val_metrics["loss"],
-            val_acc=val_metrics["acc"],
-            model=model
-        )
-
-        if early_stopping.early_stop:
-            print(
-                f"Early stopping at epoch {epoch}. "
-                f"Best epoch: {early_stopping.best_epoch}"
+        # Save checkpoints
+        if epoch % checkpoint_freq == 0 or epoch == max_epochs:
+            checkpoint_file = f"best_model_{f_stage}_epoch{epoch}.pt"
+            checkpoint_path = os.path.join(checkpoint_dir, checkpoint_file)
+            torch.save(model.state_dict(), checkpoint_path)
+            log_checkpoint(logger, epoch, checkpoint_path)
+        else:
+            early_stopping(
+                epoch=epoch,
+                val_loss=val_metrics["loss"],
+                val_acc=val_metrics["acc"],
+                model=model
             )
-            break
+
+            if early_stopping.early_stop:
+                print(
+                    f"Early stopping at epoch {epoch}. "
+                    f"Best epoch: {early_stopping.best_epoch}"
+                )
+                break
+
 
         history.append({
             "epoch": epoch,
@@ -59,12 +80,12 @@ def train_supervised(
         })
 
         print(
-            f"\nEpoch {epoch:03d} | "
+            f"Epoch {epoch:03d} | "
             f"LR {optimizer.param_groups[0]['lr']:.2e} | "
             f"Tr Loss: {train_metrics['loss']:.3f} | "
             f"Tr Acc: {train_metrics['acc']:.2f}% | "
             f"Val Loss: {val_metrics['loss']:.3f} | "
-            f"Val Acc: {val_metrics['acc']:.2f}%"
+            f"Val Acc: {val_metrics['acc']:.2f}%\n"
         )
 
 

@@ -207,8 +207,10 @@ class SeqTransformerEncoder(TransformerEncoder):
         )
 
         self.transformer = nn.TransformerEncoder(encoder_layer, n_layers)
-
-        self.norm = norm_layer(embed_dim)
+        if norm_layer is not None:
+            self.norm = norm_layer(embed_dim)
+        else:
+            self.norm = None
         self.init_std = init_std
         self.apply(self._init_weights)
 

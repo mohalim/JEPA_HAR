@@ -1,0 +1,420 @@
+2026-04-11 12:48:39 | Epoch 001
+Tr Loss 43.133, Sim 0.358, Var Pd 0.745, Cov Pd 1.359, Std Pd 0.255, Std Cx 0.541, Norm Pd 6.228
+Val Loss 171.141, Sim 0.270, Var Pd 0.922, Cov Pd 122.151, Std Pd 0.078, Std Cx 0.551, Norm Pd 5.914
+
+2026-04-11 12:52:19 | Epoch 002
+Tr Loss 23.401, Sim 0.376, Var Pd 0.721, Cov Pd 1.234, Std Pd 0.279, Std Cx 0.768, Norm Pd 6.223
+Val Loss 102.188, Sim 0.281, Var Pd 0.878, Cov Pd 81.678, Std Pd 0.122, Std Cx 0.626, Norm Pd 5.747
+
+2026-04-11 12:55:41 | Epoch 003
+Tr Loss 14.996, Sim 0.372, Var Pd 0.716, Cov Pd 1.238, Std Pd 0.284, Std Cx 0.748, Norm Pd 6.228
+Val Loss 90.295, Sim 0.279, Var Pd 0.842, Cov Pd 74.594, Std Pd 0.158, Std Cx 0.594, Norm Pd 5.703
+
+2026-04-11 12:58:47 | Epoch 004
+Tr Loss 11.507, Sim 0.364, Var Pd 0.711, Cov Pd 1.240, Std Pd 0.289, Std Cx 0.687, Norm Pd 6.229
+Val Loss 85.528, Sim 0.281, Var Pd 0.814, Cov Pd 72.949, Std Pd 0.185, Std Cx 0.538, Norm Pd 5.636
+
+2026-04-11 13:01:53 | Epoch 005
+Tr Loss 9.288, Sim 0.349, Var Pd 0.708, Cov Pd 1.241, Std Pd 0.292, Std Cx 0.594, Norm Pd 6.228
+Val Loss 81.517, Sim 0.294, Var Pd 0.803, Cov Pd 68.299, Std Pd 0.197, Std Cx 0.457, Norm Pd 5.870
+
+2026-04-11 13:01:53 | Checkpoint saved | epoch=5 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch5_w102_edim440.pt
+2026-04-11 13:04:59 | Epoch 006
+Tr Loss 7.987, Sim 0.330, Var Pd 0.707, Cov Pd 1.242, Std Pd 0.293, Std Cx 0.494, Norm Pd 6.227
+Val Loss 79.973, Sim 0.295, Var Pd 0.784, Cov Pd 66.399, Std Pd 0.216, Std Cx 0.378, Norm Pd 6.025
+
+2026-04-11 13:08:23 | Epoch 007
+Tr Loss 7.203, Sim 0.316, Var Pd 0.707, Cov Pd 1.242, Std Pd 0.293, Std Cx 0.411, Norm Pd 6.226
+Val Loss 77.458, Sim 0.286, Var Pd 0.776, Cov Pd 62.299, Std Pd 0.224, Std Cx 0.322, Norm Pd 6.050
+
+2026-04-11 13:12:05 | Epoch 008
+Tr Loss 6.716, Sim 0.310, Var Pd 0.707, Cov Pd 1.243, Std Pd 0.293, Std Cx 0.348, Norm Pd 6.227
+Val Loss 72.373, Sim 0.285, Var Pd 0.771, Cov Pd 55.960, Std Pd 0.229, Std Cx 0.275, Norm Pd 6.057
+
+2026-04-11 13:15:28 | Epoch 009
+Tr Loss 6.448, Sim 0.307, Var Pd 0.707, Cov Pd 1.244, Std Pd 0.293, Std Cx 0.298, Norm Pd 6.226
+Val Loss 66.352, Sim 0.289, Var Pd 0.762, Cov Pd 47.320, Std Pd 0.238, Std Cx 0.242, Norm Pd 6.067
+
+2026-04-11 13:19:06 | Epoch 010
+Tr Loss 6.213, Sim 0.303, Var Pd 0.708, Cov Pd 1.244, Std Pd 0.292, Std Cx 0.260, Norm Pd 6.226
+Val Loss 63.281, Sim 0.277, Var Pd 0.765, Cov Pd 43.363, Std Pd 0.235, Std Cx 0.213, Norm Pd 6.072
+
+2026-04-11 13:19:07 | Checkpoint saved | epoch=10 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch10_w102_edim440.pt
+2026-04-11 13:22:39 | Epoch 011
+Tr Loss 6.090, Sim 0.299, Var Pd 0.709, Cov Pd 1.245, Std Pd 0.291, Std Cx 0.234, Norm Pd 6.226
+Val Loss 62.411, Sim 0.280, Var Pd 0.764, Cov Pd 42.531, Std Pd 0.236, Std Cx 0.196, Norm Pd 6.128
+
+2026-04-11 13:26:18 | Epoch 012
+Tr Loss 6.021, Sim 0.296, Var Pd 0.710, Cov Pd 1.245, Std Pd 0.290, Std Cx 0.220, Norm Pd 6.226
+Val Loss 61.191, Sim 0.277, Var Pd 0.766, Cov Pd 40.914, Std Pd 0.234, Std Cx 0.185, Norm Pd 6.129
+
+2026-04-11 13:29:58 | Epoch 013
+Tr Loss 6.059, Sim 0.293, Var Pd 0.710, Cov Pd 1.246, Std Pd 0.290, Std Cx 0.211, Norm Pd 6.225
+Val Loss 60.914, Sim 0.273, Var Pd 0.772, Cov Pd 40.525, Std Pd 0.228, Std Cx 0.180, Norm Pd 6.142
+
+2026-04-11 13:33:35 | Epoch 014
+Tr Loss 6.120, Sim 0.291, Var Pd 0.711, Cov Pd 1.246, Std Pd 0.289, Std Cx 0.205, Norm Pd 6.225
+Val Loss 59.615, Sim 0.272, Var Pd 0.767, Cov Pd 39.076, Std Pd 0.233, Std Cx 0.176, Norm Pd 6.199
+
+2026-04-11 13:37:13 | Epoch 015
+Tr Loss 6.270, Sim 0.290, Var Pd 0.711, Cov Pd 1.247, Std Pd 0.289, Std Cx 0.201, Norm Pd 6.225
+Val Loss 59.884, Sim 0.268, Var Pd 0.771, Cov Pd 39.300, Std Pd 0.229, Std Cx 0.173, Norm Pd 6.167
+
+2026-04-11 13:37:13 | Checkpoint saved | epoch=15 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch15_w102_edim440.pt
+2026-04-11 13:40:50 | Epoch 016
+Tr Loss 6.425, Sim 0.288, Var Pd 0.711, Cov Pd 1.248, Std Pd 0.289, Std Cx 0.198, Norm Pd 6.225
+Val Loss 59.150, Sim 0.265, Var Pd 0.770, Cov Pd 38.622, Std Pd 0.230, Std Cx 0.171, Norm Pd 6.189
+
+2026-04-11 13:44:27 | Epoch 017
+Tr Loss 6.673, Sim 0.287, Var Pd 0.711, Cov Pd 1.248, Std Pd 0.288, Std Cx 0.196, Norm Pd 6.225
+Val Loss 58.301, Sim 0.263, Var Pd 0.772, Cov Pd 37.450, Std Pd 0.228, Std Cx 0.171, Norm Pd 6.213
+
+2026-04-11 13:48:04 | Epoch 018
+Tr Loss 7.186, Sim 0.287, Var Pd 0.712, Cov Pd 1.248, Std Pd 0.288, Std Cx 0.195, Norm Pd 6.225
+Val Loss 58.773, Sim 0.262, Var Pd 0.771, Cov Pd 37.622, Std Pd 0.228, Std Cx 0.171, Norm Pd 6.220
+
+2026-04-11 13:51:41 | Epoch 019
+Tr Loss 7.780, Sim 0.287, Var Pd 0.712, Cov Pd 1.249, Std Pd 0.288, Std Cx 0.194, Norm Pd 6.224
+Val Loss 59.628, Sim 0.259, Var Pd 0.772, Cov Pd 38.626, Std Pd 0.228, Std Cx 0.169, Norm Pd 6.218
+
+2026-04-11 13:55:19 | Epoch 020
+Tr Loss 8.266, Sim 0.286, Var Pd 0.712, Cov Pd 1.249, Std Pd 0.288, Std Cx 0.193, Norm Pd 6.224
+Val Loss 56.847, Sim 0.262, Var Pd 0.771, Cov Pd 36.152, Std Pd 0.229, Std Cx 0.170, Norm Pd 6.213
+
+2026-04-11 13:55:19 | Checkpoint saved | epoch=20 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch20_w102_edim440.pt
+2026-04-11 13:58:56 | Epoch 021
+Tr Loss 8.604, Sim 0.286, Var Pd 0.712, Cov Pd 1.249, Std Pd 0.288, Std Cx 0.192, Norm Pd 6.224
+Val Loss 59.158, Sim 0.258, Var Pd 0.772, Cov Pd 37.228, Std Pd 0.228, Std Cx 0.167, Norm Pd 6.233
+
+2026-04-11 14:02:33 | Epoch 022
+Tr Loss 8.716, Sim 0.286, Var Pd 0.712, Cov Pd 1.249, Std Pd 0.288, Std Cx 0.192, Norm Pd 6.224
+Val Loss 58.976, Sim 0.257, Var Pd 0.776, Cov Pd 36.694, Std Pd 0.224, Std Cx 0.167, Norm Pd 6.242
+
+2026-04-11 14:06:10 | Epoch 023
+Tr Loss 8.864, Sim 0.287, Var Pd 0.712, Cov Pd 1.249, Std Pd 0.288, Std Cx 0.190, Norm Pd 6.223
+Val Loss 58.547, Sim 0.249, Var Pd 0.778, Cov Pd 36.367, Std Pd 0.222, Std Cx 0.166, Norm Pd 6.247
+
+2026-04-11 14:09:47 | Epoch 024
+Tr Loss 8.957, Sim 0.287, Var Pd 0.712, Cov Pd 1.249, Std Pd 0.288, Std Cx 0.189, Norm Pd 6.223
+Val Loss 59.674, Sim 0.244, Var Pd 0.782, Cov Pd 38.240, Std Pd 0.217, Std Cx 0.165, Norm Pd 6.270
+
+2026-04-11 14:13:25 | Epoch 025
+Tr Loss 9.090, Sim 0.288, Var Pd 0.712, Cov Pd 1.250, Std Pd 0.288, Std Cx 0.187, Norm Pd 6.223
+Val Loss 58.920, Sim 0.251, Var Pd 0.779, Cov Pd 36.498, Std Pd 0.221, Std Cx 0.163, Norm Pd 6.255
+
+2026-04-11 14:13:25 | Checkpoint saved | epoch=25 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch25_w102_edim440.pt
+2026-04-11 14:17:02 | Epoch 026
+Tr Loss 9.372, Sim 0.288, Var Pd 0.712, Cov Pd 1.250, Std Pd 0.288, Std Cx 0.185, Norm Pd 6.223
+Val Loss 59.213, Sim 0.243, Var Pd 0.781, Cov Pd 37.093, Std Pd 0.219, Std Cx 0.162, Norm Pd 6.280
+
+2026-04-11 14:20:38 | Epoch 027
+Tr Loss 9.609, Sim 0.288, Var Pd 0.712, Cov Pd 1.250, Std Pd 0.288, Std Cx 0.183, Norm Pd 6.223
+Val Loss 59.063, Sim 0.239, Var Pd 0.784, Cov Pd 37.952, Std Pd 0.216, Std Cx 0.160, Norm Pd 6.271
+
+2026-04-11 14:24:14 | Epoch 028
+Tr Loss 9.716, Sim 0.288, Var Pd 0.712, Cov Pd 1.250, Std Pd 0.288, Std Cx 0.181, Norm Pd 6.223
+Val Loss 59.094, Sim 0.245, Var Pd 0.784, Cov Pd 36.411, Std Pd 0.215, Std Cx 0.158, Norm Pd 6.267
+
+2026-04-11 14:27:50 | Epoch 029
+Tr Loss 9.809, Sim 0.287, Var Pd 0.712, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.179, Norm Pd 6.222
+Val Loss 59.596, Sim 0.235, Var Pd 0.790, Cov Pd 36.531, Std Pd 0.210, Std Cx 0.155, Norm Pd 6.305
+
+2026-04-11 14:31:17 | Epoch 030
+Tr Loss 10.000, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.176, Norm Pd 6.222
+Val Loss 59.301, Sim 0.236, Var Pd 0.792, Cov Pd 36.094, Std Pd 0.207, Std Cx 0.153, Norm Pd 6.294
+
+2026-04-11 14:31:17 | Checkpoint saved | epoch=30 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch30_w102_edim440.pt
+2026-04-11 14:34:51 | Epoch 031
+Tr Loss 10.241, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.173, Norm Pd 6.221
+Val Loss 60.286, Sim 0.240, Var Pd 0.797, Cov Pd 37.515, Std Pd 0.203, Std Cx 0.152, Norm Pd 6.295
+
+2026-04-11 14:38:26 | Epoch 032
+Tr Loss 10.531, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.171, Norm Pd 6.221
+Val Loss 59.864, Sim 0.238, Var Pd 0.795, Cov Pd 36.732, Std Pd 0.205, Std Cx 0.148, Norm Pd 6.304
+
+2026-04-11 14:42:01 | Epoch 033
+Tr Loss 10.848, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.169, Norm Pd 6.221
+Val Loss 60.978, Sim 0.239, Var Pd 0.794, Cov Pd 36.704, Std Pd 0.205, Std Cx 0.147, Norm Pd 6.295
+
+2026-04-11 14:45:35 | Epoch 034
+Tr Loss 11.370, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.168, Norm Pd 6.221
+Val Loss 62.808, Sim 0.234, Var Pd 0.797, Cov Pd 38.399, Std Pd 0.203, Std Cx 0.146, Norm Pd 6.339
+
+2026-04-11 14:49:10 | Epoch 035
+Tr Loss 11.765, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.166, Norm Pd 6.221
+Val Loss 62.507, Sim 0.240, Var Pd 0.799, Cov Pd 37.523, Std Pd 0.200, Std Cx 0.146, Norm Pd 6.326
+
+2026-04-11 14:49:10 | Checkpoint saved | epoch=35 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch35_w102_edim440.pt
+2026-04-11 14:52:44 | Epoch 036
+Tr Loss 11.886, Sim 0.286, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.165, Norm Pd 6.220
+Val Loss 62.924, Sim 0.240, Var Pd 0.801, Cov Pd 37.707, Std Pd 0.198, Std Cx 0.144, Norm Pd 6.325
+
+2026-04-11 14:56:18 | Epoch 037
+Tr Loss 12.247, Sim 0.287, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.165, Norm Pd 6.220
+Val Loss 64.021, Sim 0.236, Var Pd 0.799, Cov Pd 38.883, Std Pd 0.200, Std Cx 0.144, Norm Pd 6.327
+
+2026-04-11 14:59:52 | Epoch 038
+Tr Loss 12.618, Sim 0.288, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.164, Norm Pd 6.220
+Val Loss 64.416, Sim 0.238, Var Pd 0.800, Cov Pd 38.556, Std Pd 0.199, Std Cx 0.144, Norm Pd 6.340
+
+2026-04-11 15:03:25 | Epoch 039
+Tr Loss 12.979, Sim 0.289, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.163, Norm Pd 6.220
+Val Loss 64.369, Sim 0.237, Var Pd 0.796, Cov Pd 37.804, Std Pd 0.203, Std Cx 0.142, Norm Pd 6.335
+
+2026-04-11 15:06:59 | Epoch 040
+Tr Loss 13.386, Sim 0.289, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.162, Norm Pd 6.220
+Val Loss 65.432, Sim 0.241, Var Pd 0.800, Cov Pd 39.025, Std Pd 0.199, Std Cx 0.140, Norm Pd 6.329
+
+2026-04-11 15:06:59 | Checkpoint saved | epoch=40 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch40_w102_edim440.pt
+2026-04-11 15:10:34 | Epoch 041
+Tr Loss 13.667, Sim 0.289, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.161, Norm Pd 6.220
+Val Loss 66.046, Sim 0.234, Var Pd 0.799, Cov Pd 40.020, Std Pd 0.201, Std Cx 0.142, Norm Pd 6.356
+
+2026-04-11 15:14:08 | Epoch 042
+Tr Loss 14.029, Sim 0.288, Var Pd 0.713, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.163, Norm Pd 6.220
+Val Loss 63.221, Sim 0.239, Var Pd 0.795, Cov Pd 37.261, Std Pd 0.204, Std Cx 0.144, Norm Pd 6.325
+
+2026-04-11 15:17:43 | Epoch 043
+Tr Loss 14.326, Sim 0.288, Var Pd 0.713, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.166, Norm Pd 6.221
+Val Loss 58.141, Sim 0.233, Var Pd 0.788, Cov Pd 34.137, Std Pd 0.211, Std Cx 0.148, Norm Pd 6.352
+
+2026-04-11 15:21:18 | Epoch 044
+Tr Loss 14.732, Sim 0.287, Var Pd 0.713, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.169, Norm Pd 6.222
+Val Loss 52.438, Sim 0.232, Var Pd 0.784, Cov Pd 30.936, Std Pd 0.216, Std Cx 0.152, Norm Pd 6.357
+
+2026-04-11 15:24:53 | Epoch 045
+Tr Loss 14.577, Sim 0.287, Var Pd 0.713, Cov Pd 1.253, Std Pd 0.287, Std Cx 0.170, Norm Pd 6.223
+Val Loss 51.132, Sim 0.234, Var Pd 0.779, Cov Pd 30.143, Std Pd 0.220, Std Cx 0.153, Norm Pd 6.329
+
+2026-04-11 15:24:53 | Checkpoint saved | epoch=45 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch45_w102_edim440.pt
+2026-04-11 15:28:28 | Epoch 046
+Tr Loss 14.376, Sim 0.289, Var Pd 0.713, Cov Pd 1.253, Std Pd 0.287, Std Cx 0.171, Norm Pd 6.223
+Val Loss 51.253, Sim 0.233, Var Pd 0.780, Cov Pd 30.590, Std Pd 0.220, Std Cx 0.153, Norm Pd 6.344
+
+2026-04-11 15:32:03 | Epoch 047
+Tr Loss 14.133, Sim 0.289, Var Pd 0.713, Cov Pd 1.253, Std Pd 0.287, Std Cx 0.170, Norm Pd 6.223
+Val Loss 50.348, Sim 0.233, Var Pd 0.777, Cov Pd 30.146, Std Pd 0.222, Std Cx 0.152, Norm Pd 6.339
+
+2026-04-11 15:35:37 | Epoch 048
+Tr Loss 14.031, Sim 0.290, Var Pd 0.713, Cov Pd 1.253, Std Pd 0.287, Std Cx 0.169, Norm Pd 6.223
+Val Loss 49.708, Sim 0.235, Var Pd 0.777, Cov Pd 29.960, Std Pd 0.222, Std Cx 0.151, Norm Pd 6.330
+
+2026-04-11 15:39:10 | Epoch 049
+Tr Loss 13.917, Sim 0.291, Var Pd 0.713, Cov Pd 1.253, Std Pd 0.287, Std Cx 0.168, Norm Pd 6.223
+Val Loss 49.167, Sim 0.235, Var Pd 0.776, Cov Pd 29.388, Std Pd 0.224, Std Cx 0.150, Norm Pd 6.353
+
+2026-04-11 15:42:43 | Epoch 050
+Tr Loss 13.895, Sim 0.292, Var Pd 0.712, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.167, Norm Pd 6.223
+Val Loss 49.165, Sim 0.235, Var Pd 0.775, Cov Pd 29.514, Std Pd 0.224, Std Cx 0.149, Norm Pd 6.348
+
+2026-04-11 15:42:43 | Checkpoint saved | epoch=50 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch50_w102_edim440.pt
+2026-04-11 15:46:15 | Epoch 051
+Tr Loss 13.826, Sim 0.294, Var Pd 0.712, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.166, Norm Pd 6.224
+Val Loss 48.886, Sim 0.236, Var Pd 0.773, Cov Pd 29.101, Std Pd 0.227, Std Cx 0.149, Norm Pd 6.353
+
+2026-04-11 15:49:33 | Epoch 052
+Tr Loss 13.831, Sim 0.295, Var Pd 0.712, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.165, Norm Pd 6.224
+Val Loss 48.596, Sim 0.238, Var Pd 0.774, Cov Pd 28.732, Std Pd 0.225, Std Cx 0.147, Norm Pd 6.350
+
+2026-04-11 15:52:45 | Epoch 053
+Tr Loss 13.773, Sim 0.296, Var Pd 0.712, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.164, Norm Pd 6.224
+Val Loss 49.114, Sim 0.239, Var Pd 0.775, Cov Pd 28.906, Std Pd 0.224, Std Cx 0.148, Norm Pd 6.340
+
+2026-04-11 15:56:04 | Epoch 054
+Tr Loss 13.809, Sim 0.297, Var Pd 0.712, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.163, Norm Pd 6.224
+Val Loss 49.261, Sim 0.237, Var Pd 0.774, Cov Pd 29.106, Std Pd 0.226, Std Cx 0.146, Norm Pd 6.354
+
+2026-04-11 15:59:39 | Epoch 055
+Tr Loss 13.780, Sim 0.297, Var Pd 0.712, Cov Pd 1.252, Std Pd 0.287, Std Cx 0.161, Norm Pd 6.224
+Val Loss 49.171, Sim 0.239, Var Pd 0.774, Cov Pd 28.944, Std Pd 0.226, Std Cx 0.145, Norm Pd 6.347
+
+2026-04-11 15:59:39 | Checkpoint saved | epoch=55 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch55_w102_edim440.pt
+2026-04-11 16:03:12 | Epoch 056
+Tr Loss 14.015, Sim 0.298, Var Pd 0.712, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.161, Norm Pd 6.224
+Val Loss 49.331, Sim 0.239, Var Pd 0.772, Cov Pd 28.693, Std Pd 0.228, Std Cx 0.145, Norm Pd 6.346
+
+2026-04-11 16:06:37 | Epoch 057
+Tr Loss 14.186, Sim 0.299, Var Pd 0.712, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.160, Norm Pd 6.224
+Val Loss 48.826, Sim 0.240, Var Pd 0.773, Cov Pd 28.544, Std Pd 0.227, Std Cx 0.143, Norm Pd 6.353
+
+2026-04-11 16:10:13 | Epoch 058
+Tr Loss 14.376, Sim 0.300, Var Pd 0.712, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.160, Norm Pd 6.224
+Val Loss 49.437, Sim 0.240, Var Pd 0.773, Cov Pd 29.143, Std Pd 0.227, Std Cx 0.143, Norm Pd 6.342
+
+2026-04-11 16:13:50 | Epoch 059
+Tr Loss 14.743, Sim 0.301, Var Pd 0.712, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.159, Norm Pd 6.224
+Val Loss 49.354, Sim 0.239, Var Pd 0.771, Cov Pd 28.793, Std Pd 0.229, Std Cx 0.143, Norm Pd 6.364
+
+2026-04-11 16:17:25 | Epoch 060
+Tr Loss 14.918, Sim 0.302, Var Pd 0.713, Cov Pd 1.251, Std Pd 0.287, Std Cx 0.158, Norm Pd 6.225
+Val Loss 48.842, Sim 0.240, Var Pd 0.770, Cov Pd 28.201, Std Pd 0.230, Std Cx 0.142, Norm Pd 6.349
+
+2026-04-11 16:17:25 | Checkpoint saved | epoch=60 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch60_w102_edim440.pt
+2026-04-11 16:21:02 | Epoch 061
+Tr Loss 15.007, Sim 0.303, Var Pd 0.713, Cov Pd 1.250, Std Pd 0.287, Std Cx 0.158, Norm Pd 6.225
+Val Loss 48.659, Sim 0.241, Var Pd 0.771, Cov Pd 28.137, Std Pd 0.228, Std Cx 0.142, Norm Pd 6.346
+
+2026-04-11 16:24:37 | Epoch 062
+Tr Loss 15.321, Sim 0.304, Var Pd 0.713, Cov Pd 1.250, Std Pd 0.287, Std Cx 0.158, Norm Pd 6.225
+Val Loss 48.617, Sim 0.242, Var Pd 0.769, Cov Pd 27.977, Std Pd 0.230, Std Cx 0.141, Norm Pd 6.354
+
+2026-04-11 16:28:10 | Epoch 063
+Tr Loss 15.761, Sim 0.305, Var Pd 0.713, Cov Pd 1.250, Std Pd 0.287, Std Cx 0.157, Norm Pd 6.225
+Val Loss 49.016, Sim 0.242, Var Pd 0.770, Cov Pd 28.451, Std Pd 0.229, Std Cx 0.141, Norm Pd 6.352
+
+2026-04-11 16:31:21 | Epoch 064
+Tr Loss 15.998, Sim 0.305, Var Pd 0.713, Cov Pd 1.249, Std Pd 0.287, Std Cx 0.156, Norm Pd 6.225
+Val Loss 48.780, Sim 0.241, Var Pd 0.769, Cov Pd 27.990, Std Pd 0.231, Std Cx 0.140, Norm Pd 6.350
+
+2026-04-11 16:34:28 | Epoch 065
+Tr Loss 16.104, Sim 0.304, Var Pd 0.713, Cov Pd 1.248, Std Pd 0.287, Std Cx 0.156, Norm Pd 6.225
+Val Loss 48.456, Sim 0.242, Var Pd 0.767, Cov Pd 27.627, Std Pd 0.233, Std Cx 0.140, Norm Pd 6.350
+
+2026-04-11 16:34:28 | Checkpoint saved | epoch=65 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch65_w102_edim440.pt
+2026-04-11 16:37:36 | Epoch 066
+Tr Loss 16.454, Sim 0.305, Var Pd 0.713, Cov Pd 1.246, Std Pd 0.287, Std Cx 0.156, Norm Pd 6.226
+Val Loss 48.262, Sim 0.245, Var Pd 0.767, Cov Pd 27.066, Std Pd 0.233, Std Cx 0.141, Norm Pd 6.347
+
+2026-04-11 16:40:44 | Epoch 067
+Tr Loss 17.034, Sim 0.306, Var Pd 0.713, Cov Pd 1.246, Std Pd 0.287, Std Cx 0.156, Norm Pd 6.226
+Val Loss 48.059, Sim 0.243, Var Pd 0.764, Cov Pd 26.889, Std Pd 0.235, Std Cx 0.141, Norm Pd 6.360
+
+2026-04-11 16:43:52 | Epoch 068
+Tr Loss 17.484, Sim 0.307, Var Pd 0.713, Cov Pd 1.246, Std Pd 0.287, Std Cx 0.156, Norm Pd 6.226
+Val Loss 48.452, Sim 0.243, Var Pd 0.763, Cov Pd 26.676, Std Pd 0.236, Std Cx 0.141, Norm Pd 6.361
+
+2026-04-11 16:46:59 | Epoch 069
+Tr Loss 17.781, Sim 0.307, Var Pd 0.713, Cov Pd 1.245, Std Pd 0.287, Std Cx 0.156, Norm Pd 6.226
+Val Loss 48.447, Sim 0.244, Var Pd 0.764, Cov Pd 26.713, Std Pd 0.236, Std Cx 0.141, Norm Pd 6.364
+
+2026-04-11 16:50:06 | Epoch 070
+Tr Loss 18.146, Sim 0.308, Var Pd 0.713, Cov Pd 1.245, Std Pd 0.287, Std Cx 0.155, Norm Pd 6.227
+Val Loss 48.211, Sim 0.245, Var Pd 0.762, Cov Pd 25.885, Std Pd 0.238, Std Cx 0.141, Norm Pd 6.378
+
+2026-04-11 16:50:06 | Checkpoint saved | epoch=70 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch70_w102_edim440.pt
+2026-04-11 16:53:15 | Epoch 071
+Tr Loss 18.358, Sim 0.309, Var Pd 0.713, Cov Pd 1.244, Std Pd 0.287, Std Cx 0.155, Norm Pd 6.227
+Val Loss 48.524, Sim 0.244, Var Pd 0.761, Cov Pd 26.016, Std Pd 0.238, Std Cx 0.141, Norm Pd 6.364
+
+2026-04-11 16:56:22 | Epoch 072
+Tr Loss 18.705, Sim 0.310, Var Pd 0.713, Cov Pd 1.244, Std Pd 0.287, Std Cx 0.154, Norm Pd 6.227
+Val Loss 48.911, Sim 0.243, Var Pd 0.760, Cov Pd 25.786, Std Pd 0.240, Std Cx 0.140, Norm Pd 6.366
+
+2026-04-11 16:59:30 | Epoch 073
+Tr Loss 19.017, Sim 0.310, Var Pd 0.713, Cov Pd 1.243, Std Pd 0.287, Std Cx 0.153, Norm Pd 6.227
+Val Loss 48.832, Sim 0.244, Var Pd 0.761, Cov Pd 25.459, Std Pd 0.239, Std Cx 0.140, Norm Pd 6.367
+
+2026-04-11 17:02:38 | Epoch 074
+Tr Loss 19.272, Sim 0.311, Var Pd 0.713, Cov Pd 1.243, Std Pd 0.286, Std Cx 0.153, Norm Pd 6.227
+Val Loss 48.574, Sim 0.243, Var Pd 0.760, Cov Pd 25.713, Std Pd 0.239, Std Cx 0.139, Norm Pd 6.367
+
+2026-04-11 17:06:01 | Epoch 075
+Tr Loss 19.486, Sim 0.311, Var Pd 0.714, Cov Pd 1.242, Std Pd 0.286, Std Cx 0.152, Norm Pd 6.227
+Val Loss 48.728, Sim 0.244, Var Pd 0.761, Cov Pd 25.409, Std Pd 0.239, Std Cx 0.138, Norm Pd 6.364
+
+2026-04-11 17:06:01 | Checkpoint saved | epoch=75 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch75_w102_edim440.pt
+2026-04-11 17:09:33 | Epoch 076
+Tr Loss 19.618, Sim 0.312, Var Pd 0.714, Cov Pd 1.241, Std Pd 0.286, Std Cx 0.151, Norm Pd 6.227
+Val Loss 48.519, Sim 0.244, Var Pd 0.760, Cov Pd 25.034, Std Pd 0.239, Std Cx 0.137, Norm Pd 6.369
+
+2026-04-11 17:13:06 | Epoch 077
+Tr Loss 19.795, Sim 0.312, Var Pd 0.714, Cov Pd 1.241, Std Pd 0.286, Std Cx 0.151, Norm Pd 6.228
+Val Loss 48.348, Sim 0.245, Var Pd 0.760, Cov Pd 24.658, Std Pd 0.240, Std Cx 0.137, Norm Pd 6.364
+
+2026-04-11 17:16:39 | Epoch 078
+Tr Loss 19.844, Sim 0.312, Var Pd 0.714, Cov Pd 1.240, Std Pd 0.286, Std Cx 0.150, Norm Pd 6.228
+Val Loss 47.807, Sim 0.244, Var Pd 0.761, Cov Pd 24.152, Std Pd 0.239, Std Cx 0.136, Norm Pd 6.370
+
+2026-04-11 17:20:13 | Epoch 079
+Tr Loss 19.901, Sim 0.312, Var Pd 0.714, Cov Pd 1.239, Std Pd 0.286, Std Cx 0.149, Norm Pd 6.228
+Val Loss 47.607, Sim 0.243, Var Pd 0.760, Cov Pd 23.880, Std Pd 0.240, Std Cx 0.136, Norm Pd 6.359
+
+2026-04-11 17:23:46 | Epoch 080
+Tr Loss 19.957, Sim 0.312, Var Pd 0.714, Cov Pd 1.238, Std Pd 0.286, Std Cx 0.148, Norm Pd 6.228
+Val Loss 47.102, Sim 0.243, Var Pd 0.760, Cov Pd 23.606, Std Pd 0.240, Std Cx 0.135, Norm Pd 6.364
+
+2026-04-11 17:23:46 | Checkpoint saved | epoch=80 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch80_w102_edim440.pt
+2026-04-11 17:27:20 | Epoch 081
+Tr Loss 19.939, Sim 0.312, Var Pd 0.714, Cov Pd 1.238, Std Pd 0.286, Std Cx 0.148, Norm Pd 6.228
+Val Loss 46.922, Sim 0.243, Var Pd 0.760, Cov Pd 23.389, Std Pd 0.240, Std Cx 0.134, Norm Pd 6.371
+
+2026-04-11 17:30:55 | Epoch 082
+Tr Loss 19.883, Sim 0.312, Var Pd 0.714, Cov Pd 1.236, Std Pd 0.286, Std Cx 0.147, Norm Pd 6.228
+Val Loss 45.971, Sim 0.243, Var Pd 0.760, Cov Pd 22.559, Std Pd 0.240, Std Cx 0.134, Norm Pd 6.361
+
+2026-04-11 17:34:30 | Epoch 083
+Tr Loss 19.803, Sim 0.312, Var Pd 0.714, Cov Pd 1.235, Std Pd 0.286, Std Cx 0.147, Norm Pd 6.229
+Val Loss 44.587, Sim 0.242, Var Pd 0.760, Cov Pd 22.021, Std Pd 0.240, Std Cx 0.134, Norm Pd 6.367
+
+2026-04-11 17:38:04 | Epoch 084
+Tr Loss 19.707, Sim 0.312, Var Pd 0.714, Cov Pd 1.234, Std Pd 0.285, Std Cx 0.146, Norm Pd 6.229
+Val Loss 43.786, Sim 0.242, Var Pd 0.759, Cov Pd 21.840, Std Pd 0.241, Std Cx 0.134, Norm Pd 6.362
+
+2026-04-11 17:41:39 | Epoch 085
+Tr Loss 19.654, Sim 0.312, Var Pd 0.715, Cov Pd 1.233, Std Pd 0.285, Std Cx 0.145, Norm Pd 6.229
+Val Loss 43.004, Sim 0.243, Var Pd 0.760, Cov Pd 21.141, Std Pd 0.240, Std Cx 0.133, Norm Pd 6.357
+
+2026-04-11 17:41:39 | Checkpoint saved | epoch=85 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch85_w102_edim440.pt
+2026-04-11 17:45:15 | Epoch 086
+Tr Loss 19.694, Sim 0.312, Var Pd 0.715, Cov Pd 1.232, Std Pd 0.285, Std Cx 0.144, Norm Pd 6.229
+Val Loss 42.594, Sim 0.243, Var Pd 0.759, Cov Pd 20.758, Std Pd 0.240, Std Cx 0.132, Norm Pd 6.353
+
+2026-04-11 17:48:50 | Epoch 087
+Tr Loss 19.672, Sim 0.311, Var Pd 0.715, Cov Pd 1.231, Std Pd 0.285, Std Cx 0.144, Norm Pd 6.230
+Val Loss 42.236, Sim 0.243, Var Pd 0.760, Cov Pd 20.546, Std Pd 0.240, Std Cx 0.131, Norm Pd 6.349
+
+2026-04-11 17:51:58 | Epoch 088
+Tr Loss 19.672, Sim 0.311, Var Pd 0.715, Cov Pd 1.230, Std Pd 0.285, Std Cx 0.142, Norm Pd 6.230
+Val Loss 41.870, Sim 0.242, Var Pd 0.759, Cov Pd 20.189, Std Pd 0.241, Std Cx 0.131, Norm Pd 6.348
+
+2026-04-11 17:55:06 | Epoch 089
+Tr Loss 19.650, Sim 0.311, Var Pd 0.715, Cov Pd 1.230, Std Pd 0.285, Std Cx 0.141, Norm Pd 6.230
+Val Loss 41.628, Sim 0.243, Var Pd 0.760, Cov Pd 19.651, Std Pd 0.240, Std Cx 0.130, Norm Pd 6.334
+
+2026-04-11 17:58:14 | Epoch 090
+Tr Loss 19.658, Sim 0.311, Var Pd 0.715, Cov Pd 1.229, Std Pd 0.285, Std Cx 0.140, Norm Pd 6.230
+Val Loss 41.644, Sim 0.243, Var Pd 0.761, Cov Pd 19.751, Std Pd 0.239, Std Cx 0.128, Norm Pd 6.333
+
+2026-04-11 17:58:14 | Checkpoint saved | epoch=90 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch90_w102_edim440.pt
+2026-04-11 18:01:22 | Epoch 091
+Tr Loss 19.612, Sim 0.311, Var Pd 0.715, Cov Pd 1.228, Std Pd 0.284, Std Cx 0.139, Norm Pd 6.230
+Val Loss 41.551, Sim 0.243, Var Pd 0.760, Cov Pd 19.709, Std Pd 0.240, Std Cx 0.127, Norm Pd 6.330
+
+2026-04-11 18:04:30 | Epoch 092
+Tr Loss 19.577, Sim 0.311, Var Pd 0.716, Cov Pd 1.228, Std Pd 0.284, Std Cx 0.138, Norm Pd 6.231
+Val Loss 41.451, Sim 0.243, Var Pd 0.760, Cov Pd 19.547, Std Pd 0.240, Std Cx 0.127, Norm Pd 6.329
+
+2026-04-11 18:07:38 | Epoch 093
+Tr Loss 19.578, Sim 0.311, Var Pd 0.716, Cov Pd 1.227, Std Pd 0.284, Std Cx 0.137, Norm Pd 6.231
+Val Loss 41.531, Sim 0.243, Var Pd 0.760, Cov Pd 19.530, Std Pd 0.240, Std Cx 0.125, Norm Pd 6.331
+
+2026-04-11 18:10:46 | Epoch 094
+Tr Loss 19.569, Sim 0.310, Var Pd 0.716, Cov Pd 1.227, Std Pd 0.284, Std Cx 0.136, Norm Pd 6.231
+Val Loss 41.546, Sim 0.243, Var Pd 0.760, Cov Pd 19.470, Std Pd 0.239, Std Cx 0.125, Norm Pd 6.324
+
+2026-04-11 18:13:54 | Epoch 095
+Tr Loss 19.541, Sim 0.310, Var Pd 0.716, Cov Pd 1.226, Std Pd 0.284, Std Cx 0.135, Norm Pd 6.231
+Val Loss 41.459, Sim 0.243, Var Pd 0.761, Cov Pd 19.406, Std Pd 0.239, Std Cx 0.124, Norm Pd 6.322
+
+2026-04-11 18:13:54 | Checkpoint saved | epoch=95 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch95_w102_edim440.pt
+2026-04-11 18:17:03 | Epoch 096
+Tr Loss 19.511, Sim 0.310, Var Pd 0.716, Cov Pd 1.225, Std Pd 0.284, Std Cx 0.134, Norm Pd 6.231
+Val Loss 41.439, Sim 0.243, Var Pd 0.761, Cov Pd 19.371, Std Pd 0.239, Std Cx 0.123, Norm Pd 6.320
+
+2026-04-11 18:20:10 | Epoch 097
+Tr Loss 19.524, Sim 0.310, Var Pd 0.716, Cov Pd 1.225, Std Pd 0.284, Std Cx 0.134, Norm Pd 6.231
+Val Loss 41.456, Sim 0.243, Var Pd 0.761, Cov Pd 19.343, Std Pd 0.239, Std Cx 0.123, Norm Pd 6.318
+
+2026-04-11 18:23:18 | Epoch 098
+Tr Loss 19.556, Sim 0.310, Var Pd 0.716, Cov Pd 1.225, Std Pd 0.284, Std Cx 0.134, Norm Pd 6.230
+Val Loss 41.455, Sim 0.243, Var Pd 0.761, Cov Pd 19.338, Std Pd 0.239, Std Cx 0.123, Norm Pd 6.318
+
+2026-04-11 18:26:41 | Epoch 099
+Tr Loss 19.560, Sim 0.310, Var Pd 0.716, Cov Pd 1.225, Std Pd 0.284, Std Cx 0.133, Norm Pd 6.230
+Val Loss 41.421, Sim 0.243, Var Pd 0.761, Cov Pd 19.320, Std Pd 0.239, Std Cx 0.123, Norm Pd 6.318
+
+2026-04-11 18:29:59 | Epoch 100
+Tr Loss 19.563, Sim 0.310, Var Pd 0.716, Cov Pd 1.225, Std Pd 0.284, Std Cx 0.133, Norm Pd 6.230
+Val Loss 41.444, Sim 0.243, Var Pd 0.761, Cov Pd 19.329, Std Pd 0.239, Std Cx 0.123, Norm Pd 6.318
+
+2026-04-11 18:29:59 | Checkpoint saved | epoch=100 | path=checkpoints/w102/win_seq_xformer2_e440/cpt_epoch100_w102_edim440.pt

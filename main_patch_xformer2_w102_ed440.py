@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import warnings
+import shutil
+from pathlib import Path
 
 from torch.utils.data import DataLoader
 
@@ -92,7 +94,7 @@ else:
     checkpoint_dir = f"checkpoints/w{window_size}/win_seq_{exp_num}"
 
 max_epochs = 100
-patience = 20
+patience = max_epochs
 base_lr = 1e-4
 max_lr = 1e-3
 optimizer = torch.optim.AdamW(model.parameters(), lr=base_lr, betas=(0.9, 0.99))
@@ -107,6 +109,10 @@ if is_load:
                                     base_lr=base_lr, max_lr=max_lr, 
                                     checkpoint_dir=checkpoint_dir, patience=patience)
 else:
+    # Remove existing folders and checkpoints
+    folder = Path(checkpoint_dir)
+    if folder.exists() and folder.is_dir():
+        shutil.rmtree(folder)
     history = train_self_supervised(model, train_loader, val_loader, optimizer, 
                                     device, start_epoch=1, max_epochs=max_epochs, 
                                     base_lr=base_lr, max_lr=max_lr,

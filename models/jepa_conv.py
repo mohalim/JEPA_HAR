@@ -33,12 +33,12 @@ class JEPA_SEQ(nn.Module):
         if not is_seq:
             self.context_encoder = ConvolutionalEncoder(
                 seq_length=seq_length, in_channels=channels, patch_size=patch_size,
-                kernel_sizes=conv_kernel_sizes, embed_dim=embedding_dim
+                kernel_sizes=conv_kernel_sizes, embed_dim=embedding_dim, norm_layer=nn.LayerNorm
                 )
         else:
             self.context_encoder = ConvolutionalEncoder(
                 seq_length=seq_length, in_channels=channels, patch_size=patch_size,
-                kernel_sizes=conv_kernel_sizes, embed_dim=embedding_dim
+                kernel_sizes=conv_kernel_sizes, embed_dim=embedding_dim, norm_layer=nn.LayerNorm
                 )
         
         # ---- Target Encoder ----

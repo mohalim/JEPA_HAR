@@ -5,9 +5,11 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 
-from training.losses import vicreg_jepa_loss, vicreg_loss
+from training.losses import vicreg_loss
 from utils.metrics import representation_stats
-from utils.misc import move_to_device, WeightDecayScheduler
+from utils.misc import move_to_device
+from utils.scheduler import WeightDecayScheduler
+from utils.earlystopping import EarlyStoppingSelfSupervised
 from utils.logging import setup_logger, log_metrics, log_checkpoint, log_early_stop_progress, log_training_stop
 
 # If feature std collapses, your model is dead — even if loss improves.
@@ -77,11 +79,19 @@ def train_self_supervised(
     checkpoint_dir="checkpoints",
     checkpoint_freq=5,
     collapse_std_threshold=0.1,
-    patience = 20
+    early_stop_metric='cov',
+    patience=20
 ):
     os.makedirs(checkpoint_dir, exist_ok=True)
 
     logger = setup_logger(checkpoint_dir)
+
+    early_stopping = EarlyStoppingSelfSupervised(dir_path=checkpoint_dir,
+                                                 seq_length=model.seq_length,
+                                                 embedding_dim=model.embedding_dim,
+                                                 monitor=early_stop_metric, 
+                                                 patience=patience, 
+                                                 delta=0.0)
     
     # History storage
     history = []
@@ -124,6 +134,21 @@ def train_self_supervised(
             checkpoint_path = os.path.join(checkpoint_dir, checkpoint_file)
             torch.save(model.state_dict(), checkpoint_path)
             log_checkpoint(logger, epoch, checkpoint_path)
+        
+        else:
+            early_stopping(
+                epoch=epoch,
+                val_cov=val_metrics["cov_pred"],
+                val_var=val_metrics["var_pred"],
+                model=model
+            )
+
+            if early_stopping.early_stop:
+                print(
+                    f"Early stopping at epoch {epoch}. "
+                    f"Best epoch: {early_stopping.best_epoch}"
+                )
+                break
 
         history.append({
             "epoch": epoch,
@@ -158,7 +183,8 @@ def train_one_epoch(model, dataloader, optimizer, lr_scheduler, wd_scheduler, de
 
         z_pred, z_target, z_context = model(batch)
 
-        loss, loss_dict = vicreg_loss(z_pred, z_target.detach())
+        embed_dim = model.embedding_dim
+        loss, loss_dict = vicreg_loss(z_pred, z_target.detach(), embed_dim)
 
         optimizer.zero_grad()
         loss.backward()
@@ -230,8 +256,9 @@ def validate(model, dataloader, device, epoch):
         batch = move_to_device(batch, device)
 
         z_pred, z_target, z_context = model(batch)
-
-        loss, loss_dict = vicreg_loss(z_pred, z_target)
+        
+        embed_dim = model.embedding_dim
+        loss, loss_dict = vicreg_loss(z_pred, z_target, embed_dim)
 
         std_pred, norm = representation_stats(z_pred)
         std_ctx, _ = representation_stats(z_context)

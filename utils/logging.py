@@ -87,6 +87,16 @@ def log_metrics(logger, epoch, train_metrics, val_metrics):
     logger.info(msg)      # clean, single-line in file
     #tqdm.write(msg)       # clean console output
 
+def log_clf_metrics(logger, epoch, train_metrics, val_metrics):
+    msg = (
+        f"Epoch {epoch:03d}\n"
+        f"Tr Loss {train_metrics['loss']:.3f}, "
+        f"Tr Acc {train_metrics['acc']:.3f}, "
+        f"Val Loss {val_metrics['loss']:.3f}, "
+        f"Val Acc {val_metrics['acc']:.3f}\n"
+    )
+
+    logger.info(msg)      # clean, single-line in file
 
 def log_checkpoint(logger, epoch, path):
     msg = (

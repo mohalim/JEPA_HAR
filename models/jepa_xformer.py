@@ -33,12 +33,12 @@ class JEPA_SEQ(nn.Module):
         if not is_seq:
             self.context_encoder = TransformerEncoder(
                 seq_length=seq_length, in_channels=channels, patch_size=patch_size,
-                embed_dim=embedding_dim, n_heads=n_heads, n_layers=n_layers
+                embed_dim=embedding_dim, n_heads=n_heads, n_layers=n_layers, norm_layer=nn.LayerNorm
                 )
         else:
             self.context_encoder = SeqTransformerEncoder(
                 seq_length=seq_length, in_channels=channels, patch_size=patch_size,
-                embed_dim=embedding_dim, n_heads=n_heads, n_layers=n_layers
+                embed_dim=embedding_dim, n_heads=n_heads, n_layers=n_layers, norm_layer=nn.LayerNorm
                 )
         
         # ---- Target Encoder ----

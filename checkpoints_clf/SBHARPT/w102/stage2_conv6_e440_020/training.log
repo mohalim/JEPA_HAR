@@ -1,0 +1,320 @@
+2026-04-09 13:00:33 | Epoch 001
+Tr Loss 0.873, Tr Acc 88.122, Val Loss 0.801, Val Acc 88.084
+
+2026-04-09 13:00:36 | Epoch 002
+Tr Loss 0.723, Tr Acc 92.814, Val Loss 0.758, Val Acc 91.317
+
+2026-04-09 13:00:39 | Epoch 003
+Tr Loss 0.704, Tr Acc 93.445, Val Loss 0.803, Val Acc 91.317
+
+2026-04-09 13:00:41 | Epoch 004
+Tr Loss 0.694, Tr Acc 93.593, Val Loss 0.733, Val Acc 92.335
+
+2026-04-09 13:00:43 | Epoch 005
+Tr Loss 0.674, Tr Acc 94.283, Val Loss 0.760, Val Acc 91.437
+
+2026-04-09 13:00:43 | Checkpoint saved | epoch=5 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch5.pt
+2026-04-09 13:00:45 | Epoch 006
+Tr Loss 0.663, Tr Acc 94.579, Val Loss 0.751, Val Acc 92.575
+
+2026-04-09 13:00:48 | Epoch 007
+Tr Loss 0.648, Tr Acc 95.081, Val Loss 0.749, Val Acc 91.018
+
+2026-04-09 13:00:50 | Epoch 008
+Tr Loss 0.637, Tr Acc 95.614, Val Loss 0.779, Val Acc 88.623
+
+2026-04-09 13:00:52 | Epoch 009
+Tr Loss 0.623, Tr Acc 96.382, Val Loss 0.734, Val Acc 92.635
+
+2026-04-09 13:00:55 | Epoch 010
+Tr Loss 0.623, Tr Acc 96.077, Val Loss 0.745, Val Acc 93.772
+
+2026-04-09 13:00:55 | Checkpoint saved | epoch=10 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch10.pt
+2026-04-09 13:00:57 | Epoch 011
+Tr Loss 0.614, Tr Acc 96.412, Val Loss 0.742, Val Acc 91.916
+
+2026-04-09 13:01:00 | Epoch 012
+Tr Loss 0.602, Tr Acc 97.033, Val Loss 0.738, Val Acc 91.317
+
+2026-04-09 13:01:02 | Epoch 013
+Tr Loss 0.599, Tr Acc 96.875, Val Loss 0.743, Val Acc 89.581
+
+2026-04-09 13:01:04 | Epoch 014
+Tr Loss 0.597, Tr Acc 96.944, Val Loss 0.720, Val Acc 90.958
+
+2026-04-09 13:01:07 | Epoch 015
+Tr Loss 0.590, Tr Acc 97.388, Val Loss 0.743, Val Acc 90.958
+
+2026-04-09 13:01:07 | Checkpoint saved | epoch=15 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch15.pt
+2026-04-09 13:01:09 | Epoch 016
+Tr Loss 0.587, Tr Acc 97.378, Val Loss 0.777, Val Acc 88.204
+
+2026-04-09 13:01:12 | Epoch 017
+Tr Loss 0.583, Tr Acc 97.526, Val Loss 0.721, Val Acc 91.737
+
+2026-04-09 13:01:14 | Epoch 018
+Tr Loss 0.584, Tr Acc 97.674, Val Loss 0.773, Val Acc 88.982
+
+2026-04-09 13:01:16 | Epoch 019
+Tr Loss 0.580, Tr Acc 97.486, Val Loss 0.726, Val Acc 92.036
+
+2026-04-09 13:01:19 | Epoch 020
+Tr Loss 0.579, Tr Acc 97.753, Val Loss 0.734, Val Acc 92.575
+
+2026-04-09 13:01:19 | Checkpoint saved | epoch=20 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch20.pt
+2026-04-09 13:01:21 | Epoch 021
+Tr Loss 0.578, Tr Acc 97.989, Val Loss 0.712, Val Acc 91.257
+
+2026-04-09 13:01:24 | Epoch 022
+Tr Loss 0.572, Tr Acc 98.058, Val Loss 0.737, Val Acc 91.557
+
+2026-04-09 13:01:26 | Epoch 023
+Tr Loss 0.577, Tr Acc 97.891, Val Loss 0.723, Val Acc 91.198
+
+2026-04-09 13:01:28 | Epoch 024
+Tr Loss 0.564, Tr Acc 98.541, Val Loss 0.752, Val Acc 88.503
+
+2026-04-09 13:01:30 | Epoch 025
+Tr Loss 0.572, Tr Acc 98.038, Val Loss 0.719, Val Acc 90.359
+
+2026-04-09 13:01:30 | Checkpoint saved | epoch=25 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch25.pt
+2026-04-09 13:01:33 | Epoch 026
+Tr Loss 0.565, Tr Acc 98.433, Val Loss 0.744, Val Acc 90.719
+
+2026-04-09 13:01:35 | Epoch 027
+Tr Loss 0.560, Tr Acc 98.669, Val Loss 0.708, Val Acc 91.856
+
+2026-04-09 13:01:37 | Epoch 028
+Tr Loss 0.557, Tr Acc 98.827, Val Loss 0.722, Val Acc 91.138
+
+2026-04-09 13:01:39 | Epoch 029
+Tr Loss 0.556, Tr Acc 98.837, Val Loss 0.724, Val Acc 92.455
+
+2026-04-09 13:01:41 | Epoch 030
+Tr Loss 0.554, Tr Acc 98.995, Val Loss 0.697, Val Acc 94.731
+
+2026-04-09 13:01:42 | Checkpoint saved | epoch=30 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch30.pt
+2026-04-09 13:01:44 | Epoch 031
+Tr Loss 0.564, Tr Acc 98.581, Val Loss 0.702, Val Acc 93.054
+
+2026-04-09 13:01:46 | Epoch 032
+Tr Loss 0.555, Tr Acc 99.064, Val Loss 0.708, Val Acc 91.916
+
+2026-04-09 13:01:49 | Epoch 033
+Tr Loss 0.550, Tr Acc 99.162, Val Loss 0.710, Val Acc 92.814
+
+2026-04-09 13:01:51 | Epoch 034
+Tr Loss 0.548, Tr Acc 99.300, Val Loss 0.718, Val Acc 91.617
+
+2026-04-09 13:01:53 | Epoch 035
+Tr Loss 0.543, Tr Acc 99.566, Val Loss 0.710, Val Acc 91.796
+
+2026-04-09 13:01:53 | Checkpoint saved | epoch=35 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch35.pt
+2026-04-09 13:01:56 | Epoch 036
+Tr Loss 0.548, Tr Acc 99.202, Val Loss 0.723, Val Acc 92.994
+
+2026-04-09 13:01:59 | Epoch 037
+Tr Loss 0.545, Tr Acc 99.507, Val Loss 0.718, Val Acc 92.515
+
+2026-04-09 13:02:01 | Epoch 038
+Tr Loss 0.542, Tr Acc 99.487, Val Loss 0.737, Val Acc 90.898
+
+2026-04-09 13:02:04 | Epoch 039
+Tr Loss 0.542, Tr Acc 99.576, Val Loss 0.727, Val Acc 92.096
+
+2026-04-09 13:02:06 | Epoch 040
+Tr Loss 0.541, Tr Acc 99.547, Val Loss 0.719, Val Acc 91.078
+
+2026-04-09 13:02:06 | Checkpoint saved | epoch=40 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch40.pt
+2026-04-09 13:02:09 | Epoch 041
+Tr Loss 0.542, Tr Acc 99.487, Val Loss 0.700, Val Acc 92.335
+
+2026-04-09 13:02:11 | Epoch 042
+Tr Loss 0.538, Tr Acc 99.704, Val Loss 0.716, Val Acc 92.575
+
+2026-04-09 13:02:14 | Epoch 043
+Tr Loss 0.538, Tr Acc 99.714, Val Loss 0.711, Val Acc 91.677
+
+2026-04-09 13:02:17 | Epoch 044
+Tr Loss 0.537, Tr Acc 99.694, Val Loss 0.692, Val Acc 93.234
+
+2026-04-09 13:02:19 | Epoch 045
+Tr Loss 0.536, Tr Acc 99.803, Val Loss 0.734, Val Acc 91.677
+
+2026-04-09 13:02:19 | Checkpoint saved | epoch=45 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch45.pt
+2026-04-09 13:02:21 | Epoch 046
+Tr Loss 0.538, Tr Acc 99.734, Val Loss 0.711, Val Acc 92.156
+
+2026-04-09 13:02:24 | Epoch 047
+Tr Loss 0.535, Tr Acc 99.823, Val Loss 0.714, Val Acc 92.096
+
+2026-04-09 13:02:26 | Epoch 048
+Tr Loss 0.535, Tr Acc 99.813, Val Loss 0.732, Val Acc 91.078
+
+2026-04-09 13:02:28 | Epoch 049
+Tr Loss 0.534, Tr Acc 99.823, Val Loss 0.703, Val Acc 92.814
+
+2026-04-09 13:02:31 | Epoch 050
+Tr Loss 0.533, Tr Acc 99.862, Val Loss 0.702, Val Acc 92.275
+
+2026-04-09 13:02:31 | Checkpoint saved | epoch=50 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch50.pt
+2026-04-09 13:02:33 | Epoch 051
+Tr Loss 0.531, Tr Acc 99.970, Val Loss 0.672, Val Acc 94.551
+
+2026-04-09 13:02:36 | Epoch 052
+Tr Loss 0.532, Tr Acc 99.951, Val Loss 0.725, Val Acc 91.437
+
+2026-04-09 13:02:38 | Epoch 053
+Tr Loss 0.534, Tr Acc 99.823, Val Loss 0.731, Val Acc 91.198
+
+2026-04-09 13:02:41 | Epoch 054
+Tr Loss 0.532, Tr Acc 99.941, Val Loss 0.713, Val Acc 92.216
+
+2026-04-09 13:02:43 | Epoch 055
+Tr Loss 0.532, Tr Acc 99.911, Val Loss 0.701, Val Acc 92.695
+
+2026-04-09 13:02:43 | Checkpoint saved | epoch=55 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch55.pt
+2026-04-09 13:02:46 | Epoch 056
+Tr Loss 0.532, Tr Acc 99.901, Val Loss 0.672, Val Acc 93.473
+
+2026-04-09 13:02:49 | Epoch 057
+Tr Loss 0.530, Tr Acc 100.000, Val Loss 0.695, Val Acc 92.994
+
+2026-04-09 13:02:51 | Epoch 058
+Tr Loss 0.530, Tr Acc 99.961, Val Loss 0.688, Val Acc 93.353
+
+2026-04-09 13:02:53 | Epoch 059
+Tr Loss 0.531, Tr Acc 99.941, Val Loss 0.690, Val Acc 93.174
+
+2026-04-09 13:02:56 | Epoch 060
+Tr Loss 0.531, Tr Acc 99.921, Val Loss 0.669, Val Acc 94.072
+
+2026-04-09 13:02:56 | Checkpoint saved | epoch=60 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch60.pt
+2026-04-09 13:02:58 | Epoch 061
+Tr Loss 0.530, Tr Acc 99.980, Val Loss 0.674, Val Acc 94.311
+
+2026-04-09 13:03:01 | Epoch 062
+Tr Loss 0.529, Tr Acc 100.000, Val Loss 0.678, Val Acc 93.653
+
+2026-04-09 13:03:04 | Epoch 063
+Tr Loss 0.529, Tr Acc 100.000, Val Loss 0.678, Val Acc 94.012
+
+2026-04-09 13:03:06 | Epoch 064
+Tr Loss 0.529, Tr Acc 100.000, Val Loss 0.685, Val Acc 93.353
+
+2026-04-09 13:03:09 | Epoch 065
+Tr Loss 0.529, Tr Acc 100.000, Val Loss 0.688, Val Acc 93.054
+
+2026-04-09 13:03:09 | Checkpoint saved | epoch=65 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch65.pt
+2026-04-09 13:03:11 | Epoch 066
+Tr Loss 0.530, Tr Acc 99.961, Val Loss 0.709, Val Acc 92.275
+
+2026-04-09 13:03:14 | Epoch 067
+Tr Loss 0.529, Tr Acc 99.990, Val Loss 0.687, Val Acc 93.054
+
+2026-04-09 13:03:16 | Epoch 068
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.688, Val Acc 93.054
+
+2026-04-09 13:03:19 | Epoch 069
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.695, Val Acc 92.395
+
+2026-04-09 13:03:22 | Epoch 070
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.692, Val Acc 92.575
+
+2026-04-09 13:03:22 | Checkpoint saved | epoch=70 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch70.pt
+2026-04-09 13:03:24 | Epoch 071
+Tr Loss 0.529, Tr Acc 99.980, Val Loss 0.688, Val Acc 93.174
+
+2026-04-09 13:03:26 | Epoch 072
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.687, Val Acc 92.994
+
+2026-04-09 13:03:29 | Epoch 073
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.687, Val Acc 92.874
+
+2026-04-09 13:03:31 | Epoch 074
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.680, Val Acc 93.952
+
+2026-04-09 13:03:33 | Epoch 075
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.692, Val Acc 92.635
+
+2026-04-09 13:03:33 | Checkpoint saved | epoch=75 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch75.pt
+2026-04-09 13:03:36 | Epoch 076
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.692, Val Acc 92.874
+
+2026-04-09 13:03:38 | Epoch 077
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.685, Val Acc 93.174
+
+2026-04-09 13:03:41 | Epoch 078
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.683, Val Acc 93.174
+
+2026-04-09 13:03:43 | Epoch 079
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.684, Val Acc 92.994
+
+2026-04-09 13:03:45 | Epoch 080
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.689, Val Acc 92.575
+
+2026-04-09 13:03:45 | Checkpoint saved | epoch=80 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch80.pt
+2026-04-09 13:03:48 | Epoch 081
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.691, Val Acc 92.695
+
+2026-04-09 13:03:50 | Epoch 082
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.681, Val Acc 93.593
+
+2026-04-09 13:03:53 | Epoch 083
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.692, Val Acc 92.395
+
+2026-04-09 13:03:56 | Epoch 084
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.688, Val Acc 92.994
+
+2026-04-09 13:03:58 | Epoch 085
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.683, Val Acc 93.593
+
+2026-04-09 13:03:58 | Checkpoint saved | epoch=85 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch85.pt
+2026-04-09 13:04:01 | Epoch 086
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.686, Val Acc 93.234
+
+2026-04-09 13:04:03 | Epoch 087
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.688, Val Acc 92.814
+
+2026-04-09 13:04:05 | Epoch 088
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.689, Val Acc 92.814
+
+2026-04-09 13:04:08 | Epoch 089
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.684, Val Acc 93.114
+
+2026-04-09 13:04:10 | Epoch 090
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.685, Val Acc 93.234
+
+2026-04-09 13:04:10 | Checkpoint saved | epoch=90 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch90.pt
+2026-04-09 13:04:13 | Epoch 091
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.686, Val Acc 92.934
+
+2026-04-09 13:04:15 | Epoch 092
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.687, Val Acc 92.934
+
+2026-04-09 13:04:17 | Epoch 093
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.688, Val Acc 92.754
+
+2026-04-09 13:04:19 | Epoch 094
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.685, Val Acc 93.114
+
+2026-04-09 13:04:21 | Epoch 095
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.687, Val Acc 92.874
+
+2026-04-09 13:04:21 | Checkpoint saved | epoch=95 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch95.pt
+2026-04-09 13:04:24 | Epoch 096
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.688, Val Acc 92.874
+
+2026-04-09 13:04:26 | Epoch 097
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.687, Val Acc 92.934
+
+2026-04-09 13:04:28 | Epoch 098
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.686, Val Acc 92.934
+
+2026-04-09 13:04:30 | Epoch 099
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.686, Val Acc 92.994
+
+2026-04-09 13:04:32 | Epoch 100
+Tr Loss 0.528, Tr Acc 100.000, Val Loss 0.686, Val Acc 92.994
+
+2026-04-09 13:04:32 | Checkpoint saved | epoch=100 | path=checkpoints_clf/SBHARPT/w102/stage2_conv6_e440/best_model_stage2_epoch100.pt

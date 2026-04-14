@@ -5,11 +5,15 @@ import torch.nn.functional as F
 def invariance_loss(z1, z2):
     return F.smooth_l1_loss(z1, z2)
 
-def norm_loss(z, target=1.0):
+def norm_loss(z, embed_dim, sigma=0.20):
+    target = 1 + sigma * (embed_dim**0.5 - 1)
     norm = z.norm(dim=-1)
     return ((norm - target) ** 2).mean()
 
-def variance_loss(z, gamma=1.0, eps=1e-4):
+# Sensor data is inherently less "diverse" than other unstructured data e.g. high-res images
+# So gamma is set to 0.4 - 0.5. 
+# Setting gamma=1.0 might forcing the model to produce noise just to satisfy the loss
+def variance_loss(z, gamma=0.5, eps=1e-4):
     z = z.reshape(-1, z.shape[-1])      # (B*seq_len, E)
     std = torch.sqrt(z.var(dim=0, unbiased=False) + eps)    # (B*seq_len, E)
     #std = torch.sqrt(z.var(dim=1, unbiased=False) + eps)  # per-sample
@@ -36,18 +40,20 @@ def covariance_loss(z):
     return loss
 
 def vicreg_loss(
-    z1,
-    z2,
+    z1, # predict
+    z2, # target
+    embed_dim,
     sim_coeff=1.0, # Sensor embeddings have lower semantic richness than vision
-    norm_coeff=0.01,
-    var_coeff=1.0,  
-    cov_coeff=0.1,  # based on https://arxiv.org/abs/2410.19560
+    norm_coeff=0.1,
+    var_coeff=5.0,  # how much the model cares about maintaining variance
+    cov_coeff=0.2,  # based on https://arxiv.org/abs/2410.19560 - it shouldn't be too strong that it outweighs the actual learning (invariance)
 ):
     #z1 = F.normalize(z1, dim=-1)
     #z2 = F.normalize(z2, dim=-1)
 
     sim = invariance_loss(z1, z2)
-    norm_pred = norm_loss(z1)
+    norm_pred = norm_loss(z1, embed_dim)
+    # norm_target = norm_loss(z2, embed_dim)
     var_pred = variance_loss(z1)
     var_target = variance_loss(z2)
     cov_pred = covariance_loss(z1)
@@ -55,7 +61,7 @@ def vicreg_loss(
 
     loss = (
         sim_coeff * sim + 
-        norm_coeff * norm_pred +
+        norm_coeff * norm_pred + 
         var_coeff * (var_pred + var_target) + 
         cov_coeff * (cov_pred + cov_target)
         )
@@ -68,6 +74,7 @@ def vicreg_loss(
         'cov_target': cov_target.item(),
         }
 
+'''
 def vicreg_jepa_loss(
     z1,     # z_pred
     z2,     # z_tgt
@@ -113,7 +120,7 @@ def vicreg_jepa_loss(
         'cov_ctx': cov_ctx.item(),  
     }
 
-'''
+
 def cosine_sim_loss(z_pred, z_target):
     z_target = z_target.detach()
 
