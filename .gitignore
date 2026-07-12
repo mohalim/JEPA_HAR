@@ -4,7 +4,10 @@ include/
 lib/
 lib64/
 share/
+ijepa/
 
 #ignore all files
 *.pt
 *.cfg
+*.png
+*.log

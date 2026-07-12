@@ -12,6 +12,7 @@ from models.jepa_conv import JEPA_SEQ
 from training.train import train_self_supervised
 from utils.history import save_history_txt
 from data.dataset_seq import SequentialSensorDataset
+from utils.misc import get_jepa_param_groups
 
 warnings.filterwarnings('ignore')
 
@@ -19,8 +20,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"device: {device}")
 
 exp_num = "conv6_e440"
-is_load = False
-is_winseq = True
+is_load = 0
+is_winseq = 1
 
 batch_size = 128
 
@@ -30,7 +31,7 @@ num_windows = 2
 channels = 6
 patch_size = 6             # window_size / patch_size = 17 patches
 masking_factor = 0.5
-reverse_ratio = 0.5
+reverse_ratio = 0.1     # R1: 0.5, R3: 0.1
 noise_std = 0.03
 
 train_path_dataset = "../../Datasets/REALDISP_AccGyro/train_npy/"
@@ -91,15 +92,19 @@ if not is_winseq:
 else: 
     checkpoint_dir = f"checkpoints/w{window_size}/win_seq_{exp_num}"
 
-max_epochs = 100
+max_epochs = 200
 patience = max_epochs
 base_lr = 1e-4
 max_lr = 1e-3
+
+# param_groups = get_jepa_param_groups(model)
+# optimizer = torch.optim.AdamW(param_groups, lr=base_lr, betas=(0.9, 0.99)) # R2 experiment
 optimizer = torch.optim.AdamW(model.parameters(), lr=base_lr, betas=(0.9, 0.99))
 
 if is_load:
-    start_epoch = 100
-    checkpoint_file = 'cpt_epoch80_w102_edim440.pt'
+    start_epoch = 101
+    max_epochs = 100
+    checkpoint_file = 'cpt_epoch100_w102_edim440.pt'
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_file)
     model.load_state_dict(torch.load(checkpoint_path, weights_only=True))
     history = train_self_supervised(model, train_loader, val_loader, optimizer,

@@ -4,7 +4,6 @@ import pickle
 
 from data.dataset import BaseSensorDataset
 
-
 # Sequential JEPA Dataset
 class SequentialSensorDataset(BaseSensorDataset):
     '''
@@ -63,11 +62,11 @@ class SequentialSensorDataset(BaseSensorDataset):
             s = start + i * self.stride
             window = data[s : s + self.window_size]  # [T, C]
             window = torch.from_numpy(window)
-
+            # Augmentation 1: noise additive
             is_apply_noise = torch.randint(low=0, high=2, size=(1,))
             if is_apply_noise:
                 window = self.apply_channel_noise(window)
-            
+            # Augmentation 2: channel reversal
             window = self.reverse_channels(window)
 
             windows.append(window)
@@ -89,7 +88,7 @@ class SequentialSensorDataset(BaseSensorDataset):
             "pred_mask_idx": pred_mask_idx,         # (pi,) - masked patch indices
         }
 
-
+''' Not used '''
 class SequentialSensorChannelDataset(BaseSensorDataset):
     '''
     This dataset returns indices of visible and masked channels
@@ -145,32 +144,6 @@ class SequentialSensorChannelDataset(BaseSensorDataset):
             "enc_mask_idx": enc_mask_idx,           # (ei,) - visible patch indices
             "pred_mask_idx": pred_mask_idx,         # (pi,) - masked patch indices
         }
-
-        '''
-        # ---- window 1: visible (context) ----
-        s1 = start
-        w1 = data[s1 : s1 + self.window_size]
-        windows.append(w1)
-
-        #global_idx_w1 = torch.arange(self.num_patches)
-        #enc_mask_idx.append(global_idx_w1)              # all visible
-        #pred_mask_idx.append(torch.empty(0, dtype=torch.long))  # nothing to predict
-
-        # ---- window 2: masked (target) ----
-        s2 = start + self.stride
-        w2 = data[s2 : s2 + self.window_size]
-        windows.append(w2)
-        
-        #global_idx_w2 = enc = torch.arange(self.num_patches)
-        #enc_mask_idx.append(torch.empty(0, dtype=torch.long))   # nothing visible
-        #pred_mask_idx.append(global_idx_w2)                     # predict all patches
-
-        return {
-            "windows": windows,                     # list[k] of (L, C)
-            #"enc_mask_idx": enc_mask_idx,           # (ei,) - visible patch indices
-            #"pred_mask_idx": pred_mask_idx,         # (pi,) - masked patch indices
-        }'''
-
 
 
 '''

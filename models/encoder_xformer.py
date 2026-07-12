@@ -253,27 +253,8 @@ class SeqTransformerEncoder(TransformerEncoder):
         return z
 
 
-'''
-Design goals (for JEPA + HAR)
-For transition modeling, cross-window attention should:
-1. Force w2 to attend to w1 (asymmetric)
-2. Preserve JEPA’s predictive structure (no leakage from w2 → w1)
-3. Be lightweight (HAR data is small)
-4. Operate at patch level, not raw samples
-
-w1 → PatchEmbed → Transformer → z1
-w2 → PatchEmbed → Transformer → z2
-
-z2 ← CrossAttention(query=z2, key=z1, value=z1)
-
-z1 = self.context_encoder([windows[0]])   # w1 only
-z2 = self.target_encoder([windows[1]])    # w2 only
-
-z2_ctx = self.cross_attn(z2, z1)           # transition modeling
-z_pred = self.predictor(z1)                # JEPA prediction
-z_tgt = z2_ctx.detach()
-'''
-
+''' Not used '''
+''' Experimental layers '''
 class CrossWindowAttention(nn.Module):
     def __init__(self, embed_dim, n_heads, dropout=0.1):
         super().__init__()
@@ -287,8 +268,8 @@ class CrossWindowAttention(nn.Module):
 
     def forward(self, z_q, z_kv):
         """
-        z_q: (B, N2, E)  → w2 patches (queries)
-        z_kv: (B, N1, E) → w1 patches (keys/values)
+        z_q: (B, N2, E)  -> w2 patches (queries)
+        z_kv: (B, N1, E) -> w1 patches (keys/values)
         """
         attn_out, _ = self.attn(
             query=z_q,
@@ -297,8 +278,8 @@ class CrossWindowAttention(nn.Module):
         )
         return self.norm(z_q + attn_out)
 
-
-
+''' Not used '''
+''' Experimental layers '''
 class MultiScaleTemporalConv(nn.Module):
     def __init__(self, in_channels, embed_dim):
         super().__init__()

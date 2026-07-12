@@ -64,7 +64,6 @@ class Predictor(nn.Module):
                 nn.init.constant_(m.bias, 0)
 
     def forward(self, ctx, enc_mask_indices, pred_mask_indices):
-    #def forward(self, ctx):
         """
         ctx: (B, v, E) - context embeddings for both windows
         enc_mask_indices: [(B, ei,), (B, ei)] - batch, visible indices

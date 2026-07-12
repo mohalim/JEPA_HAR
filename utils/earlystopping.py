@@ -9,21 +9,18 @@ class EarlyStopping:
     def __init__(
         self,
         dir_path,
-        f_stage,
         monitor="loss",      # "loss" or "acc"
         patience=7,
         delta=0.0,
         verbose=False
     ):
-        assert monitor in ["loss", "acc"]
+        assert monitor in ["loss", "acc", "avg_f1"]
 
         self.dir_path = dir_path
         self.monitor = monitor
         self.patience = patience
         self.delta = delta
         self.verbose = verbose
-
-        self.f_stage = f_stage
 
         self.counter = 0
         self.early_stop = False
@@ -33,19 +30,14 @@ class EarlyStopping:
         if monitor == "loss":
             self.best = float("inf")
             self.mode = "min"
-        else:  # accuracy
+        elif monitor == "acc" or monitor == "avg_f1":  # accuracy or avg f1
             self.best = -float("inf")
             self.mode = "max"
 
-    def __call__(self, epoch, val_loss, val_acc, model):
-        """
-        Args:
-            epoch (int)
-            val_loss (float)
-            val_acc (float)
-            model (nn.Module)
-        """
-        current = val_loss if self.monitor == "loss" else val_acc
+
+    def __call__(self, epoch, val_metrics, model):
+        # current = val_loss if self.monitor == "loss" else val_acc
+        current = val_metrics[self.monitor]
 
         improved = (
             current < self.best - self.delta
@@ -67,7 +59,7 @@ class EarlyStopping:
                 )
             if self.counter >= self.patience:
                 self.early_stop = True
-
+    
     def save_checkpoint(self, epoch, model):
         """Save best model."""
         if self.verbose:
@@ -77,7 +69,7 @@ class EarlyStopping:
             )
 
         checkpoint_path = os.path.join(
-            self.dir_path, f"best_model_{self.f_stage}_epoch{epoch}.pt"
+            self.dir_path, f"best_model_progressive_epoch{epoch}.pt"
         )
         torch.save(model.state_dict(), checkpoint_path)
 

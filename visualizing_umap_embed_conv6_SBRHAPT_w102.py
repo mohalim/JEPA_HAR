@@ -9,6 +9,7 @@ import umap
 import matplotlib.pyplot as plt
 
 from models.classifier_conv import JEPAClassifier
+from models.linear_probing import JEPALinearProbe
 from models.jepa_conv import JEPA_SEQ
 from data.dataset_supervised import SequentialSupervisedSensorDataset
 from utils.misc import extract_embeddings
@@ -21,7 +22,8 @@ is_winseq = True
 top_k = 4       # number of final layers of encoder to fine-tune
 
 exp_num = "conv6_e440"  # conv6_e440
-is_stage_two = False
+suffix = "_020_R3"
+ckp_num = 81
 
 window_size = 102
 overlap = 0.5
@@ -46,6 +48,8 @@ if not is_winseq:
 else:
     checkpoint_dir = f"checkpoints/w{window_size}/win_seq_{exp_num}"
 
+checkpoint_dir = checkpoint_dir + suffix
+
 kernel_sizes = [7, 5, 3, 3]
 embedding_dim = 440
 predictor_embed_dim = 220
@@ -65,7 +69,7 @@ model = JEPA_SEQ(
     is_seq=is_winseq
     ).to(device)
 
-checkpoint_file = 'cpt_epoch100_w102_edim440.pt'
+checkpoint_file = 'cpt_epoch199_w102_edim440.pt'
 model.load_state_dict(torch.load(os.path.join(checkpoint_dir, checkpoint_file), weights_only=True))
 model.eval()
 context_encoder = model.context_encoder
@@ -78,32 +82,36 @@ classifier_head = nn.Sequential(
             nn.Dropout(0.1),
             nn.Linear(int(embedding_dim/2), num_classes)
             )
-
+'''
 classifier_model = JEPAClassifier(context_encoder, 
                                   classifier_head,
                                   freeze_encoder=True).to(device)
+'''
+linear_model = JEPALinearProbe(context_encoder, 
+                               embed_dim=embedding_dim,
+                               num_classes=num_classes,
+                               freeze_encoder=True).to(device)
 
-if not is_stage_two:
-    checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage1_{exp_num}"
-    visualization_dir = f"visualization/SBHARPT/w{window_size}/stage1_{exp_num}"
-else:
-    checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/stage2_{exp_num}"
-    visualization_dir = f"visualization/SBHARPT/w{window_size}/stage2_{exp_num}"
+
+checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/probe_{exp_num}"
+visualization_dir = f"visualization/SBHARPT/w{window_size}/probe_{exp_num}"
+
+checkpoint_clf_dir = checkpoint_clf_dir + suffix
+visualization_dir = visualization_dir + suffix
 
 os.makedirs(visualization_dir, exist_ok=True)
 
-stageNo = 1 if not is_stage_two else 2
-best_checkpoint = f'best_model_stage{stageNo}_epoch90.pt'
+best_checkpoint = f'best_model_progressive_epoch{ckp_num}.pt'
 path_checkpoint = os.path.join(checkpoint_clf_dir, best_checkpoint)
 
 #all_files = glob.glob(os.path.join(checkpoint_clf_dir, "*.pt"))
 #best_checkpoint = all_files[-1]
 print(f"Loading best model: {path_checkpoint}")
-classifier_model.load_state_dict(torch.load(path_checkpoint, weights_only=True))
+linear_model.load_state_dict(torch.load(path_checkpoint, weights_only=True))
 
 
 embeddings, labels = extract_embeddings(
-    classifier_model, test_loader, device, dim=1
+    linear_model, test_loader, device, dim=1
 )
 
 # print(embeddings.shape)  # (num_samples, 440)
@@ -129,12 +137,12 @@ scatter = plt.scatter(
 )
 
 plt.legend(*scatter.legend_elements(), title="Activity")
-plt.title("JEPA Latent Space (Test Set)")
+plt.title(f"JEPA Latent Space - UMAP ({exp_num})") # Updated title
 plt.xlabel("Dim 1")
 plt.ylabel("Dim 2")
 plt.tight_layout()
 
-visual_fn = f"jepa_latent_space_{exp_num}.png"
+visual_fn = f"jepa_latent_space_umap_{exp_num}.png"
 save_path = os.path.join(visualization_dir, visual_fn)
 plt.savefig(save_path, dpi=300, bbox_inches="tight")
 # plt.show()

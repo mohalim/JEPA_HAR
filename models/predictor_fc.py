@@ -4,6 +4,8 @@ import torch.nn as nn
 
 from utils.misc import trunc_normal_, get_1d_sincos_pos_embed, apply_masks
 
+''' Not used '''
+''' Experimental Predictor '''
 class Predictor(nn.Module):
     def __init__(
         self,

@@ -12,33 +12,18 @@ from utils.scheduler import WeightDecayScheduler
 from utils.earlystopping import EarlyStoppingSelfSupervised
 from utils.logging import setup_logger, log_metrics, log_checkpoint, log_early_stop_progress, log_training_stop
 
-# If feature std collapses, your model is dead — even if loss improves.
-# feat_std
-# Collapse = all features identical → std → 0 e.g. Collapsing → 0.0 – 0.2
-# Rises quickly in early epochs, then stabilizes in a range e.g. JEPA / BYOL ~0.6 – 1.2, VICReg ~0.8 – 1.5
-
-# feat_norm
-# Average L2 norm per sample
-# Norm → 0 → trivial collapse, Norm → ∞ → instability
-# Stable over time, no explosions, no vanishing
-# After normalization: ~1.0
-
-# Loss plateaus early → normal
-# Validation loss not decreasing → normal
-# Train > Val loss → normal
-
 def get_cosine_lr_with_warmup(optimizer, num_warmup_steps, num_training_steps, base_lr, max_lr,):
     assert max_lr >= base_lr, "max_lr must be >= base_lr"
 
     lr_scale = max_lr / base_lr
 
     def lr_lambda(current_step):
-        # Linear warmup: base_lr → max_lr
+        # Linear warmup: base_lr -> max_lr
         if current_step < num_warmup_steps:
             warmup_progress = current_step / float(max(1, num_warmup_steps))
             return 1.0 + warmup_progress * (lr_scale - 1.0)
 
-        # Cosine decay: max_lr → 0
+        # Cosine decay: max_lr -> 0
         progress = (current_step - num_warmup_steps) / float(
             max(1, num_training_steps - num_warmup_steps)
         )
@@ -93,7 +78,7 @@ def train_self_supervised(
                                                  patience=patience, 
                                                  delta=0.0)
     
-    # History storage
+    # Store history
     history = []
     cnt_early_stop = 0
 
@@ -106,14 +91,15 @@ def train_self_supervised(
                                              base_lr=base_lr,
                                              max_lr=max_lr)
     
+    '''
     wd_scheduler = WeightDecayScheduler(optimizer, 
                                         wd_start=0.04, 
                                         wd_end=0.4, 
                                         total_steps=total_steps)
-
+    '''
     for epoch in tqdm(range(start_epoch, int(start_epoch + max_epochs)), desc="Training Progress", position=0):
         # Training & Validation
-        train_metrics = train_one_epoch(model, train_loader, optimizer, lr_scheduler, wd_scheduler, device, epoch, total_steps)
+        train_metrics = train_one_epoch(model, train_loader, optimizer, lr_scheduler, device, epoch, total_steps)
         val_metrics = validate(model, val_loader, device, epoch)
 
         log_metrics(logger, epoch, train_metrics, val_metrics)
@@ -158,17 +144,15 @@ def train_self_supervised(
 
     return history
 
-def train_one_epoch(model, dataloader, optimizer, lr_scheduler, wd_scheduler, device, epoch, total_steps):
+def train_one_epoch(model, dataloader, optimizer, lr_scheduler, device, epoch, total_steps):
     model.train()
 
     total_loss = 0.0
     total_sim = 0.0
     total_var_pred = 0.0
-    total_var_target = 0.0
-    total_var_ctx = 0.0      
+    total_var_target = 0.0     
     total_cov_pred = 0.0
-    total_cov_target = 0.0
-    total_cov_ctx = 0.0      
+    total_cov_target = 0.0     
     total_std = 0.0
     total_std_ctx = 0.0      
     total_norm = 0.0
@@ -194,7 +178,7 @@ def train_one_epoch(model, dataloader, optimizer, lr_scheduler, wd_scheduler, de
         
         optimizer.step()
         lr_scheduler.step()
-        wd_scheduler.step()
+        # wd_scheduler.step()
 
         momentum = get_cosine_ema_momentum_with_warmup(
             step=global_step,
@@ -243,10 +227,8 @@ def validate(model, dataloader, device, epoch):
     total_sim = 0.0
     total_var_pred = 0.0
     total_var_target = 0.0
-    total_var_ctx = 0.0
     total_cov_pred = 0.0
     total_cov_target = 0.0
-    total_cov_ctx = 0.0
     total_std = 0.0
     total_std_ctx = 0.0
     total_norm = 0.0

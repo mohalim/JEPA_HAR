@@ -4,6 +4,56 @@ import torch
 import math
 # from tqdm import tqdm
 
+def get_jepa_param_groups(model):
+    decay = []
+    no_decay = []
+    for name, param in model.named_parameters():
+        if not param.requires_grad:
+            continue
+        # Do not decay biases or normalization layers
+        if len(param.shape) == 1 or name.endswith(".bias"):
+            no_decay.append(param)
+        else:
+            decay.append(param)
+    return [
+        {"params": decay, "weight_decay": 1e-2},    # following AdamW's default value
+        {"params": no_decay, "weight_decay": 0.0} # locked at 0.0
+    ]
+
+def get_classifier_param_groups(model, enc_lr, clf_lr, weight_decay):
+    # Groups for the Encoder
+    enc_decay = []
+    enc_no_decay = []
+    
+    # Groups for the Classifier
+    clf_decay = []
+    clf_no_decay = []
+
+    for name, param in model.named_parameters():
+        if not param.requires_grad:
+            continue
+
+        # Decide which LR group it belongs to
+        if "context_encoder" in name:
+            target_decay = enc_decay
+            target_no_decay = enc_no_decay
+        else:
+            target_decay = clf_decay
+            target_no_decay = clf_no_decay
+
+        # Decide if it should be decayed (Weights vs Biases/Norms)
+        if len(param.shape) == 1 or name.endswith(".bias"):
+            target_no_decay.append(param)
+        else:
+            target_decay.append(param)
+
+    return [
+        {"params": enc_decay, "lr": enc_lr, "weight_decay": weight_decay},
+        {"params": enc_no_decay, "lr": enc_lr, "weight_decay": 0.0},
+        {"params": clf_decay, "lr": clf_lr, "weight_decay": weight_decay},
+        {"params": clf_no_decay, "lr": clf_lr, "weight_decay": 0.0},
+    ]
+
 def _no_grad_trunc_normal_(tensor, mean, std, a, b):
     # Cut & paste from PyTorch official master until it's in a few official releases - RW
     # Method based on https://people.sc.fsu.edu/~jburkardt/presentations/truncated_normal.pdf
@@ -153,6 +203,34 @@ def extract_embeddings(model, dataloader, device, dim=1):
     labels = np.concatenate(labels, axis=0)
 
     return embeddings, labels
+
+# method = inverse, balanced, square-root
+# dataset = 'SBHARPT' or 'FORTH-TRACE'
+def get_class_weight(method, dataset='SBHARPT'):
+    if dataset == 'SBHARPT':
+        class_counts = torch.tensor(
+            [578, 566, 536, 666, 679, 706, 48, 36, 58, 46, 51, 55],
+            dtype=torch.float
+        )
+
+    else:
+        class_counts = torch.tensor(
+            [842, 827, 1396, 676, 59, 66], 
+            dtype=torch.float
+        )
+
+    if method == 'inverse':
+        weights = 1.0 / class_counts    # inverse
+        return weights / weights.sum() * len(class_counts)   # normalize
+    
+    elif method == 'balanced':
+        N = class_counts.sum()
+        C = len(class_counts)
+        return N / (C * class_counts)
+
+    elif method == 'square-root':
+        weights = 1 / torch.sqrt(class_counts)
+        return weights / weights.mean()
 
 
 # def apply_masks(x, mask_indices, is_equal_indices=True):

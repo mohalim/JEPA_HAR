@@ -33,23 +33,25 @@ def setup_logger(log_dir, filename="training.log", name="train"):
 
 import numpy as np
 
-def log_evaluation(logger, accuracy, conf_matrix, class_report, epoch=None):
+def log_evaluation(logger, test_metrics, epoch=None):
     """
     Logs accuracy, confusion matrix, and classification report.
-    
-    Args:
-        logger: The logger instance from setup_logger.
-        accuracy: float, the accuracy score.
-        conf_matrix: array-like, the confusion matrix.
-        class_report: str, the classification report string from sklearn.
-        epoch: int (optional), the current training epoch.
+    logger: The logger instance from setup_logger.
+    test_metrics
+    epoch: the current training epoch.
     """
+    accuracy = test_metrics["acc"]
+    avg_f1 = test_metrics["avg_f1"]
+    conf_matrix = test_metrics["conf_matrix"]
+    clf_report = test_metrics["clf_report"]
+
     header = f" METRICS - EPOCH {epoch} " if epoch is not None else " METRICS "
     
     logger.info(f"{'='*20}{header}{'='*20}")
     
     # Log Accuracy
     logger.info(f"Overall Accuracy: {accuracy:.4f}%")
+    logger.info(f"Average F1-score: {avg_f1:.4f}%")
     
     # Log Confusion Matrix 
     # Using np.array2string to maintain formatting in the text log
@@ -57,7 +59,7 @@ def log_evaluation(logger, accuracy, conf_matrix, class_report, epoch=None):
     logger.info(f"Confusion Matrix:\n{matrix_str}")
     
     # Log Classification Report
-    logger.info(f"Classification Report:\n{class_report}")
+    logger.info(f"Classification Report:\n{clf_report}")
     
     logger.info(f"{'='*50}\n")
 
@@ -93,7 +95,8 @@ def log_clf_metrics(logger, epoch, train_metrics, val_metrics):
         f"Tr Loss {train_metrics['loss']:.3f}, "
         f"Tr Acc {train_metrics['acc']:.3f}, "
         f"Val Loss {val_metrics['loss']:.3f}, "
-        f"Val Acc {val_metrics['acc']:.3f}\n"
+        f"Val Acc {val_metrics['acc']:.3f}, "
+        f"Val Loss {val_metrics['avg_f1']:.3f}\n"
     )
 
     logger.info(msg)      # clean, single-line in file

@@ -8,9 +8,9 @@ import warnings
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
-from models.jepa_xformer import JEPA_SEQ
-from models.classifier_xformer import JEPAClassifier
+from models.classifier_conv import JEPAClassifier
 from models.linear_probing import JEPALinearProbe
+from models.jepa_conv import JEPA_SEQ
 from data.dataset_supervised import SequentialSupervisedSensorDataset
 from utils.misc import extract_embeddings
 
@@ -21,9 +21,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 is_winseq = True
 top_k = 4       # number of final layers of encoder to fine-tune
 
-exp_num = "xformer2_e440"  # xformer2_e440
-suffix = "_020_R3"
-ckp_num = 75
+exp_num = "conv6_e440"  
+suffix = "_030_R3"
+ckp_num = 73
 
 window_size = 102
 overlap = 0.5
@@ -50,9 +50,8 @@ else:
 
 checkpoint_dir = checkpoint_dir + suffix
 
+kernel_sizes = [7, 5, 3, 3]
 embedding_dim = 440
-n_heads = 8
-n_layers = 4
 predictor_embed_dim = 220
 predictor_n_heads = 4
 predictor_n_layers = 2
@@ -61,17 +60,16 @@ model = JEPA_SEQ(
     seq_length=window_size,
     channels=channels,
     patch_size=patch_size,
-    num_windows=num_windows, 
-    embedding_dim=embedding_dim, 
-    n_heads=n_heads,
-    n_layers=n_layers,
+    conv_kernel_sizes=kernel_sizes,
+    #num_windows=num_windows, 
+    embedding_dim=embedding_dim,
     predictor_embed_dim=predictor_embed_dim,
     predictor_n_heads=predictor_n_heads,
     predictor_n_layers=predictor_n_layers,
     is_seq=is_winseq
     ).to(device)
 
-checkpoint_file = 'cpt_epoch154_w102_edim440.pt'
+checkpoint_file = 'cpt_epoch176_w102_edim440.pt'
 model.load_state_dict(torch.load(os.path.join(checkpoint_dir, checkpoint_file), weights_only=True))
 model.eval()
 context_encoder = model.context_encoder
@@ -93,6 +91,7 @@ linear_model = JEPALinearProbe(context_encoder,
                                embed_dim=embedding_dim,
                                num_classes=num_classes,
                                freeze_encoder=True).to(device)
+
 
 checkpoint_clf_dir = f"checkpoints_clf/SBHARPT/w{window_size}/probe_{exp_num}"
 visualization_dir = f"visualization/SBHARPT/w{window_size}/probe_{exp_num}"
