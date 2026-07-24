@@ -1,4 +1,8 @@
 # Joint-Embedding Predictive Architecture for Sensor-based Activity Recognition
 
-Abstract:
+📄 **Paper:** https://arxiv.org/abs/2607.16350v1
+
+## Abstract
 Sensor-based human activity recognition (HAR) has achieved significant progressed in fully supervised learning settings. However, these supervised learning models rely on large amount of labeled data, which require labor-intensive collection and meticulous annotation. To address these challenges, this paper proposes a Joint Embedding Predictive Architecture framework tailored for sensor-based HAR, designed to learn robust and generalizable representations from unlabeled datasets. The proposed framework features an encoder designed to explicitly model both the fine-grained local temporal representations within individual window and the long-term temporal sequence of adjacent windows. Furthermore, we introduce an improved Variance-Invariance-Covariance Regularization (VICReg) objective function that incorporates computationally lightweight norm term to stabilize the JEPA pre-training phase. This term balances variance, invariance and covariance constraints to prevent representation collapse. The proposed HAR-JEPA framework is evaluated using two benchmark continuously performed activity datasets. The results show that high-quality representations are successfully learned by the proposed framework. Furthermore, the representations learned by HAR-JEPA demonstrates superior generalization on minority, high variance transitional activities such as sit-to-stand and sit-to-lie where supervised learning tend to overfit due to limited support.
+
+
